@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>SysInt</id>
+        <version>1.1.0</version>
+        <description>test</description>
+        <authors>p</authors>
+        <dependencies>
+            <dependency id="Comp1" version="[1.0.0]" />
+            <dependency id="Comp2" version="[2.0.0]" />
+        </dependencies>
+    </metadata>
+</package>

@@ -1,0 +1,6 @@
+obj
+bin
+/.env
+/dist/
+/build
+/test/packages

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <clear />
+    <add key="testcred" value="%NUGET_URL%" />
+  </packageSources>
+  <packageSourceCredentials>
+    <testcred>
+      <add key="Username" value="%NUGET_USER%" />
+      <add key="ClearTextPassword" value="%NUGET_TOKEN%" />
+    </testcred>
+  </packageSourceCredentials>
+</configuration>
