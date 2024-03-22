@@ -198,6 +198,8 @@ namespace NuGet.PowerShell
             var packageIds = packageIdentities.Select(pi => pi.Id).ToList();
             var packageIdsString = string.Join(",", packageIds);
             // Find the best version for each package
+            // TODO: find out what these parameters really mean? resolution process is difficult to understand,
+            //       especially in case there are more than one top-level dependencies
             var resolverContext = new PackageResolverContext(
                 dependencyBehavior: DependencyBehavior.Lowest,
                 targetIds: packageIds,

@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using NuGet.Frameworks;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 
 namespace NuGet.PowerShell
 {
@@ -122,7 +123,6 @@ namespace NuGet.PowerShell
                 PackageDependency = new[] {new PackageDependency(Id, Versioning.VersionRange.Parse(VersionRange) ) };
             }
 
-
             var cancellationToken = CancellationToken.None;
 
             if (ParameterSetName.StartsWith("DepObject") || ParameterSetName.StartsWith("Args"))
@@ -160,7 +160,7 @@ namespace NuGet.PowerShell
                 // Find all potential dependencies
                 foreach (var dependencyInfo in SourcePackageDependencyInfo)
                 {
-                    WriteVerbose($"Processing DepndencyInfo for main dependency: {dependencyInfo.Id} {dependencyInfo.Version}");
+                    WriteVerbose($"Processing DependencyInfo for main dependency: {dependencyInfo.Id} {dependencyInfo.Version}");
 
                     // Add to package collection
                     packages.Add(dependencyInfo);
@@ -184,6 +184,25 @@ namespace NuGet.PowerShell
         protected override Task EndProcessingAsync()
         {
             WriteVerbose("Start Resolving");
+
+            var toplevelIdString = "ResolveNugetPackages_Main";
+            var toplevelId = new PackageIdentity(toplevelIdString, NuGetVersion.Parse("0.0.0"));
+
+            WriteVerbose("Building top-level dependency for provided main package ids");
+            var depList = new List<PackageDependency>();
+            foreach (var pi in packageIdentities)
+            {
+                var d = new PackageDependency(pi.Id, NuGet.Versioning.VersionRange.Parse($"[{pi.Version}]"));
+                depList.Add(d);
+                WriteVerbose(d.ToString());
+            }
+            var toplevelDep = new SourcePackageDependencyInfo(toplevelId.Id, toplevelId.Version, depList, false, null);
+            packageIdentities.Add(toplevelId);
+            packages.Add(toplevelDep);
+
+            WriteVerbose("Resolution is bbased on this package list");
+            foreach (var p in packages) { WriteVerbose(p.ToString()); }
+
             try
             {
                 var resolvedPackages = Helpers.ResolvePackages(packageIdentities, packages, repositories, logger: this)
@@ -193,7 +212,7 @@ namespace NuGet.PowerShell
                 {
                     foreach (var p in resolvedPackages)
                     {
-                        WriteObject(p);
+                        if (p.Id != toplevelIdString) WriteObject(p);
                     }
                 }
                 else
