@@ -134,7 +134,7 @@ task createhelp {
 
 task module clean, build, createhelp, version
 
-task zip moduel, {
+task zip module, {
     Compress-Archive -DestinationPath (Join-Path $distDir "$ModuleName.${script:FullVersion}.zip") -Path $moduleDir
 }
 
