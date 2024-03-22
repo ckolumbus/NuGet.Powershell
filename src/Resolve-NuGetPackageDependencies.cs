@@ -200,7 +200,7 @@ namespace NuGet.PowerShell
             packageIdentities.Add(toplevelId);
             packages.Add(toplevelDep);
 
-            WriteVerbose("Resolution is bbased on this package list");
+            WriteVerbose("Resolution is based on this package list");
             foreach (var p in packages) { WriteVerbose(p.ToString()); }
 
             try

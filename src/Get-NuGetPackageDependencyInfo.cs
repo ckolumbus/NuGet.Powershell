@@ -16,6 +16,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,6 +58,9 @@ namespace NuGet.PowerShell
 
         [Parameter]
         public string Framework { get; set; } = "";
+
+        [Parameter]
+        public SwitchParameter RemoveTopLevelDependencies { get; set; }
 
         [Parameter(ParameterSetName = "Object-ConfigFile", Mandatory = true)]
         [Parameter(ParameterSetName = "DepObject-ConfigFile", Mandatory = true)]
@@ -135,12 +139,10 @@ namespace NuGet.PowerShell
             // Find all potential dependencies
             foreach (var package in PackageIdentity)
             {
-                if (!Recurse)
-                {
-                    var dep = await Helpers.GetPackageDependencyInfo(package, nuGetFramework, repositories, cache, logger: this);
-                    packages.Add(dep);
-                }
-                else
+                var dep = await Helpers.GetPackageDependencyInfo(package, nuGetFramework, repositories, cache, logger: this);
+                packages.Add(dep);
+
+                if (Recurse)
                 {
                     await Helpers.ListAllPackageDependencies(
                         package,
@@ -159,6 +161,11 @@ namespace NuGet.PowerShell
         {
             foreach (var p in packages)
             {
+                if (Recurse && RemoveTopLevelDependencies && PackageIdentity.Contains(p))
+                {
+                    WriteVerbose($"Remove top-level package from output: {p}");
+                    continue;
+                }
                 WriteObject(p);
             }
             return Task.CompletedTask;

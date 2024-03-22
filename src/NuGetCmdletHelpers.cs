@@ -337,7 +337,6 @@ namespace NuGet.PowerShell
                 return;
             }
 
-            logger.LogVerbose($"Starting to getting direct dependency info for {package.Id} {package.Version}");
             await ListAllPackageDependencies_(
                 dependencyInfo,
                 repositories,
