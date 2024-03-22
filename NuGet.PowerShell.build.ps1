@@ -151,6 +151,10 @@ task pushRelease checkPublishPrerequisites, version, {
     exec { git push origin "$script:FullVersion" }
 }
 
+task publish-only {
+    Publish-Module -Path $distDir/$ModuleName -Repository $Repsitory -NuGetApiKey $ApiKey
+}
+
 # Synopsis: Push PSGallery package.
 task publish checkPublishPrerequisites,  {
     if (-not $ApiKey) {
@@ -159,9 +163,7 @@ task publish checkPublishPrerequisites,  {
     if (-not $Repsitory) {
         throw "No Repository defined!"
     }
-}, module, test, {
-    Publish-Module -Path $distDir/$ModuleName -Repository $Repsitory -NuGetApiKey $ApiKey
-}, pushRelease
+}, module, test, publish-only, pushRelease
 
 task test {
     Write-Warning "Tests not yet implemented"
