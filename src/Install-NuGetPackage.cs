@@ -129,14 +129,13 @@ namespace NuGet.PowerShell
             }
 
             var packagePathResolver = new MappingPackagePathResolver(OutputPath, useSideBySidePaths: UseSideBySidePaths);
-
             var packageExtractionContext = new PackageExtractionContext(
             PackageSaveMode.Nuspec | PackageSaveMode.Files,
             XmlDocFileSaveMode.None,
             clientPolicyContext: null,
             logger: this);
 
-            if (Path.Length > 0)
+            if ((null != Path) && (Path.Length > 0))
             {
                 foreach (var pathArg in Path) {
                     var path = Helpers.GetRootedPath(pathArg, root: cwd);
@@ -152,7 +151,7 @@ namespace NuGet.PowerShell
 
                     WriteObject(packageReader);
                 }
-            } else if (SourcePackageDependencyInfo.Length > 0)
+            } else if ((null != SourcePackageDependencyInfo) && (SourcePackageDependencyInfo.Length > 0))
             {
                 foreach (var packageToInstall in SourcePackageDependencyInfo)
                 {
