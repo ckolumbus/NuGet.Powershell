@@ -20,13 +20,14 @@ using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Packaging.Core;
+using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 
 namespace NuGet.PowerShell
 {
     [Cmdlet(VerbsCommon.Get, "NuGetPackageMetadata")]
-    [OutputType(typeof(PackageIdentity))]
+    [OutputType(typeof(PackageSearchMetadata))]
     public class GetNugetPackageMetadataCmdlet : AsyncCmdlet
     {
         [Parameter(ParameterSetName = "Object", Mandatory = true, Position = 0, ValueFromPipeline = true) ]
@@ -116,7 +117,7 @@ namespace NuGet.PowerShell
                     }
                 }
                 if (packageMetadata is null) {
-                        WriteWarning($"No Metadata for found for : {identity}");
+                        WriteWarning($"No Metadata found for : {identity}");
                 } else {
                     WriteObject(packageMetadata);
                 }
