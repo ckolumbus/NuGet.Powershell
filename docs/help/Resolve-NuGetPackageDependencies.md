@@ -13,21 +13,6 @@ Resolve the transitive dependency tree for all given input packages.
 The result is a list of packages that fullfil all dependency constraints across all provided
 packages if the resolution attempt is successful.
 
-The (quirky) algorithm is as follows:
-
-- if PackageDependency objects are provided as input: resolve the VersionRange first, creating
-  a PackageDependencyInfo object containing a concrete package version with its dependencies
-- recursively identify all dependencies for the PackageDependencyInfo packages
-- create an internal virtual top-level dependency that references all provided packages as
-  direct dependencies
-- pack the virutal top-level, the provided and the recursively collected dependencies into
-  one list
-- call `Resolve` from the Nuget Client SDK on this list
-- if the resolution is successful: output the dependency list (with the virtual top-level
-  package removed again)
-
-Maybe there is a better way to use the NuGet Cient SDK functions to achieve the same result
-
 ## SYNTAX
 
 ### InfoObject (Default)
@@ -270,15 +255,26 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageDependency[]
-
 ### NuGet.Protocol.Core.Types.SourcePackageDependencyInfo[]
-
 ### System.String
-
 ## OUTPUTS
 
 ### NuGet.Protocol.Core.Types.SourcePackageDependencyInfo
-
 ## NOTES
+
+The (quirky) algorithm is as follows:
+
+- if PackageDependency objects are provided as input: resolve the VersionRange first, creating
+  a PackageDependencyInfo object containing a concrete package version with its dependencies
+- recursively identify all dependencies for the PackageDependencyInfo packages
+- create an internal virtual top-level dependency that references all provided packages as
+  direct dependencies
+- pack the virutal top-level, the provided and the recursively collected dependencies into
+  one list
+- call `Resolve` from the Nuget Client SDK on this list
+- if the resolution is successful: output the dependency list (with the virtual top-level
+  package removed again)
+
+Maybe there is a better way to use the NuGet Cient SDK functions to achieve the same result
 
 ## RELATED LINKS

@@ -213,13 +213,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity[]
-
 ### System.String
-
 ## OUTPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity
-
 ## NOTES
 
 ## RELATED LINKS

@@ -279,15 +279,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Protocol.Core.Types.SourcePackageDependencyInfo[]
-
 ### System.String[]
-
 ### System.String
-
 ## OUTPUTS
 
 ### NuGet.Packaging.PackageReaderBase
-
 ## NOTES
 
 ## RELATED LINKS

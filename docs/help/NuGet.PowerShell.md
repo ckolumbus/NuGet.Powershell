@@ -39,7 +39,10 @@ Locale: {{ Update Locale }}
 {{ Fill in the Synopsis }}
 
 ### [Resolve-NuGetPackageDependencies](Resolve-NuGetPackageDependencies.md)
-{{ Fill in the Synopsis }}
+Resolve the transitive dependency tree for all given input packages.
+
+The result is a list of packages that fullfil all dependency constraints across all provided
+packages if the resolution attempt is successful.
 
 ### [Resolve-NuGetPackageVersion](Resolve-NuGetPackageVersion.md)
 {{ Fill in the Synopsis }}

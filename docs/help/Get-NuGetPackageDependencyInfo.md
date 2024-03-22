@@ -15,58 +15,58 @@ schema: 2.0.0
 ### Object (Default)
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
- -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
- -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
+ [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DepObject
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DepObject-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- -ConfigFile <String> -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> -Source <String> [-SourceProtocolVersion <Int32>]
+ [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DepObject-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
- -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
- -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
+ [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -188,6 +188,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -RemoveTopLevelDependencies
+{{ Fill RemoveTopLevelDependencies Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Source
 {{ Fill Source Description }}
 
@@ -255,13 +270,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity[]
-
 ### NuGet.Packaging.Core.PackageDependency[]
-
 ## OUTPUTS
 
 ### NuGet.Protocol.Core.Types.SourcePackageDependencyInfo
-
 ## NOTES
 
 ## RELATED LINKS

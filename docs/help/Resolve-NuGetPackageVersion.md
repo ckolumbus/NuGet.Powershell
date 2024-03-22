@@ -224,13 +224,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageDependency[]
-
 ### System.String
-
 ## OUTPUTS
 
 ### NuGet.Protocol.Core.Types.SourcePackageDependencyInfo
-
 ## NOTES
 
 ## RELATED LINKS
