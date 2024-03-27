@@ -120,8 +120,10 @@ namespace NuGet.PowerShell
                     WriteVerbose($"Reading {fullPackageDirectory}");
 
                     var packageReader = new PackageFolderReader(fullPackageDirectory);
-                    var pi = packageReader.GetIdentity();
-                    WriteObject(pi);
+                    var nuspecStream = packageReader.GetNuspec();
+                    var xml = new XmlDocument();
+                    xml.Load(nuspecStream);
+                    WriteObject(xml);
                 }
             } else if ((null != Path) && (Path.Length > 0))
             {
