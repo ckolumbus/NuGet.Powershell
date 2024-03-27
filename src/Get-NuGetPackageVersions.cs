@@ -36,7 +36,7 @@ namespace NuGet.PowerShell
         public string[] Id { get; set; }
 
         [Parameter]
-        public string Framework { get; set; } = "";
+        public string Framework { get; set; } = "any";
 
         [Parameter(ParameterSetName = "ConfigFile")]
         public string ConfigFile { get; set; } = "";

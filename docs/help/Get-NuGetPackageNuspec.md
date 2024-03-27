@@ -1,4 +1,4 @@
----
+﻿---
 external help file: NuGet.PowerShell.dll-Help.xml
 Module Name: NuGet.PowerShell
 online version:
@@ -14,6 +14,11 @@ Can read from local files and remote packages. For the latter the packages needs
 to be downloaded.
 
 ## SYNTAX
+
+### Directory
+```
+Get-NuGetPackageNuspec -Directory <String[]> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
 
 ### Path
 ```
@@ -102,6 +107,21 @@ Parameter Sets: ConfigFile
 Aliases:
 
 Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Directory
+{{ Fill Directory Description }}
+
+```yaml
+Type: String[]
+Parameter Sets: Directory
+Aliases:
+
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -235,15 +255,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String[]
-
 ### NuGet.Packaging.Core.PackageIdentity[]
-
 ### System.String
-
 ## OUTPUTS
 
 ### System.Xml.XmlDocument
-
 ## NOTES
 
 ## RELATED LINKS

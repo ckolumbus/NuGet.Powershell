@@ -32,6 +32,9 @@ namespace NuGet.PowerShell
     [OutputType(typeof(XmlDocument))]
     public class GetNugetPackageNuspecCmdlet : AsyncCmdlet
     {
+        [Parameter(ParameterSetName = "Directory", Mandatory = true, Position = 0)]
+        public string[] Directory { get; set; }
+
         [Parameter(ParameterSetName = "Path", Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public string[] Path { get; set; }
 
@@ -103,7 +106,24 @@ namespace NuGet.PowerShell
                 PackageIdentity = new[] { new PackageIdentity(Id, NuGetVersion.Parse(Version)) };
             }
 
-            if ((null != Path) && (Path.Length > 0))
+            if ((null != Directory) && (Directory.Length > 0))
+            {
+                foreach (var packageDirectory in Directory)
+                {
+                    var fullPackageDirectory = packageDirectory;
+                    if (!System.IO.Path.IsPathRooted(packageDirectory))
+                    {
+                        fullPackageDirectory = System.IO.Path.Combine(cwd, packageDirectory);
+                    }
+                    fullPackageDirectory = System.IO.Path.GetFullPath(fullPackageDirectory);
+
+                    WriteVerbose($"Reading {fullPackageDirectory}");
+
+                    var packageReader = new PackageFolderReader(fullPackageDirectory);
+                    var pi = packageReader.GetIdentity();
+                    WriteObject(pi);
+                }
+            } else if ((null != Path) && (Path.Length > 0))
             {
                 foreach (var pathArg in Path)
                 {

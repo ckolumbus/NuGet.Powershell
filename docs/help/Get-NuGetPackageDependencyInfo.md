@@ -8,11 +8,18 @@ schema: 2.0.0
 # Get-NuGetPackageDependencyInfo
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the dependencies for package identified by an Id and a NuGet VersionRange. It can provide
+only direct dependencies or the full list of transitive dependency objects.
 
 ## SYNTAX
 
-### Object (Default)
+### Args (Default)
+```
+Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
+ [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### Object
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
  [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -40,51 +47,57 @@ Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recu
 ### DepObject-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] -ConfigFile <String> -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [-SourceCredential <PSCredential>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DepObject-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
-### Args
-```
-Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
-Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
+Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
  [-RemoveTopLevelDependencies] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
-Get-NuGetPackageDependencyInfo [-Id] <String> [-Version] <String> [-Recurse] [-Framework <String>]
+Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
  [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
  [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+The cmdlet resolves the given input parameters into a package identities and extract either only
+the direct dependencies or recursivly all transitive dependencies of this package.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-NugetPackageDependencyInfo Serilog 3.*
+
+Listed       : True
+Source       : https://api.nuget.org/v3/index.json
+DownloadUri  : https://api.nuget.org/v3-flatcontainer/serilog/3.1.1/serilog.3.1.1.nupkg
+PackageHash  :
+Dependencies : {System.Diagnostics.DiagnosticSource [7.0.2, )}
+Id           : Serilog
+Version      : 3.1.1
+HasVersion   : True
 ```
 
-{{ Add example description here }}
+Resolve `3.*` to the lates version that matches this version range and retrieves the direct dependency information without traversing the dependency tree.
 
 ## PARAMETERS
 
 ### -ConfigFile
-{{ Fill ConfigFile Description }}
+Path to the NuGet config file to use, if neither  `-ConfigFile` nor `-Source` is provide,
+the standard configs are used.
 
 ```yaml
 Type: String
@@ -99,7 +112,7 @@ Accept wildcard characters: False
 ```
 
 ### -Framework
-{{ Fill Framework Description }}
+The DotNet Framework identfier for which the dependency analysis is performed. Defaults to `any`.
 
 ```yaml
 Type: String
@@ -108,13 +121,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: any
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+The Id of the package to analyze.
 
 ```yaml
 Type: String
@@ -129,7 +142,8 @@ Accept wildcard characters: False
 ```
 
 ### -PackageDependency
-{{ Fill PackageDependency Description }}
+A list of NuGet dependency objects describing the packages to analayze
+(see `New-NugetPackageDependency` for a way to create such an object)
 
 ```yaml
 Type: PackageDependency[]
@@ -144,7 +158,8 @@ Accept wildcard characters: False
 ```
 
 ### -PackageIdentity
-{{ Fill PackageIdentity Description }}
+A list of NuGet identity objects describing the packages to analayze
+(see `New-NugetPackageIdentity` for a way to create such an object)
 
 ```yaml
 Type: PackageIdentity[]
@@ -174,7 +189,7 @@ Accept wildcard characters: False
 ```
 
 ### -Recurse
-{{ Fill Recurse Description }}
+Recursively analyze the dependency tree of the given packages.
 
 ```yaml
 Type: SwitchParameter
@@ -189,7 +204,9 @@ Accept wildcard characters: False
 ```
 
 ### -RemoveTopLevelDependencies
-{{ Fill RemoveTopLevelDependencies Description }}
+With this option, the packages provided as input are removed from the output list,
+so that only the dependencies are returned. This can be used for explicit processing
+of dependencies without the root package.
 
 ```yaml
 Type: SwitchParameter
@@ -204,11 +221,11 @@ Accept wildcard characters: False
 ```
 
 ### -Source
-{{ Fill Source Description }}
+The path or url to a NuGet package feed to be used.
 
 ```yaml
 Type: String
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 
 Required: True
@@ -219,7 +236,7 @@ Accept wildcard characters: False
 ```
 
 ### -SourceCredential
-{{ Fill SourceCredential Description }}
+The credentials for the `-Source` feed, if needed.
 
 ```yaml
 Type: PSCredential
@@ -234,32 +251,34 @@ Accept wildcard characters: False
 ```
 
 ### -SourceProtocolVersion
-{{ Fill SourceProtocolVersion Description }}
+The protocol version of the `-Source` feed, defaults to `3`.
 
 ```yaml
 Type: Int32
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 Accepted values: 2, 3
 
 Required: False
 Position: Named
-Default value: None
+Default value: 3
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Version
-{{ Fill Version Description }}
+### -VersionRange
+A NuGet version range string consisting either of a concrete version `12.0.1`,
+a version range `[11,)` or a floating version `13.*`.
+Defaults to `*`.
 
 ```yaml
 Type: String
 Parameter Sets: Args, Args-ConfigFile, Args-ConfigArgs
 Aliases:
 
-Required: True
-Position: 1
-Default value: None
+Required: False
+Position: Named
+Default value: "*"
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

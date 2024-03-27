@@ -23,12 +23,11 @@ using System.Threading.Tasks;
 using NuGet.Frameworks;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
 
 namespace NuGet.PowerShell
 {
     [Cmdlet(VerbsCommon.Get, "NuGetPackageDependencyInfo",
-        DefaultParameterSetName = "Object")]
+        DefaultParameterSetName = "Args")]
     [OutputType(typeof(SourcePackageDependencyInfo))]
 
     public class GetNugetPackageDependencyInfoCmdlet : AsyncCmdlet
@@ -48,16 +47,16 @@ namespace NuGet.PowerShell
         [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 0)]
         public string Id { get; set; }
 
-        [Parameter( ParameterSetName = "Args", Mandatory = true, Position = 1)]
-        [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 1)]
-        [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 1)]
-        public string Version { get; set; }
+        [Parameter(ParameterSetName = "Args", Position = 1)]
+        [Parameter(ParameterSetName = "Args-ConfigFile", Position = 1)]
+        [Parameter(ParameterSetName = "Args-ConfigArgs", Position = 1)]
+        public string VersionRange { get; set; } = "*";
 
         [Parameter]
         public SwitchParameter Recurse { get; set; }
 
         [Parameter]
-        public string Framework { get; set; } = "";
+        public string Framework { get; set; } = "any";
 
         [Parameter]
         public SwitchParameter RemoveTopLevelDependencies { get; set; }
@@ -68,12 +67,12 @@ namespace NuGet.PowerShell
         public string ConfigFile { get; set; } = "";
 
         [Parameter(ParameterSetName = "Object-ConfigArgs", Mandatory = true)]
-        [Parameter(ParameterSetName = "DepObject-ConfigFile", Mandatory = true)]
+        [Parameter(ParameterSetName = "DepObject-ConfigArgs", Mandatory = true)]
         [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true)]
         public string Source { get; set; } = "";
 
         [Parameter(ParameterSetName = "Object-ConfigArgs")]
-        [Parameter(ParameterSetName = "DepObject-ConfigFile")]
+        [Parameter(ParameterSetName = "DepObject-ConfigArgs")]
         [Parameter(ParameterSetName = "Args-ConfigArgs")]
         [ValidateSet(new string[] { "2", "3" })]
         public int SourceProtocolVersion { get; set; } = 3;
@@ -118,8 +117,10 @@ namespace NuGet.PowerShell
 
             if (ParameterSetName.StartsWith("Args"))
             {
-                var versionRange = VersionRange.Parse(Version);
-                PackageIdentity = new[] { new PackageIdentity(Id, versionRange.MinVersion) };
+                WriteVerbose($"Resolving Version for {Id} {VersionRange}");
+                var versionRange = Versioning.VersionRange.Parse(VersionRange);
+                var version = await Helpers.GetBestMatchingVersion(Id, versionRange, nuGetFramework, repositories, cache, logger: this);
+                PackageIdentity = new[] { new PackageIdentity(Id, version) };
             }
 
             // Resolve Dependency Object Input to a Package Identity

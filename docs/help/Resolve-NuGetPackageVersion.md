@@ -33,19 +33,19 @@ Resolve-NuGetPackageVersion [-PackageDependency] <PackageDependency[]> [-Framewo
 
 ### Args
 ```
-Resolve-NuGetPackageVersion [-Id] <String> [-Version] <String> [-Framework <String>]
+Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
-Resolve-NuGetPackageVersion [-Id] <String> [-Version] <String> [-Framework <String>] -ConfigFile <String>
+Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>] -ConfigFile <String>
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
-Resolve-NuGetPackageVersion [-Id] <String> [-Version] <String> [-Framework <String>] -Source <String>
+Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>] -Source <String>
  [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
@@ -203,8 +203,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Version
-{{ Fill Version Description }}
+### -VersionRange
+{{ Fill VersionRange Description }}
 
 ```yaml
 Type: String
@@ -212,7 +212,7 @@ Parameter Sets: Args, Args-ConfigFile, Args-ConfigArgs
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

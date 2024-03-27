@@ -12,13 +12,17 @@ Locale: {{ Update Locale }}
 
 ## NuGet.PowerShell Cmdlets
 ### [Get-NuGetPackageDependencyInfo](Get-NuGetPackageDependencyInfo.md)
-{{ Fill in the Synopsis }}
-
-### [Get-NuGetPackageIdentityFromFolder](Get-NuGetPackageIdentityFromFolder.md)
-{{ Fill in the Synopsis }}
+Get the dependencies for package identified by an Id and a NuGet VersionRange. It can provide
+only direct dependencies or the full list of transitive dependency objects.
 
 ### [Get-NuGetPackageMetadata](Get-NuGetPackageMetadata.md)
 {{ Fill in the Synopsis }}
+
+### [Get-NuGetPackageNuspec](Get-NuGetPackageNuspec.md)
+Get the `nuspec`s for provided package identities as `XmlDocument`.
+
+Can read from local files and remote packages. For the latter the packages needs
+to be downloaded.
 
 ### [Get-NuGetPackageVersions](Get-NuGetPackageVersions.md)
 {{ Fill in the Synopsis }}

@@ -23,29 +23,29 @@ SCENARIOS: TBD
 
 ### Creating NuGet Packages
 
-* `New-NugetPackage`
-* `Publish-NugetPackage`
+* `New-NugetPackage` : create package, based on a `.nuspec` file or purely based on command line arguments
+* `Publish-NugetPackage` : publish a `.nupkg` file to a package feed
 
 ### Handling NuGet Package Information Structures
 
-* `New-NugetPackageDependency`
-* `New-NugetPackageIdentity`
+* `New-NugetPackageDependency`: create a `PackageDependency` object
+* `New-NugetPackageIdentity`: create a `PackageIdentity` object
 
 ### Providing access to Individual Package Version Information
 
-* `Get-NugetPackageMetadata`
-* `Get-NugetPackageIdentityFromFolder`
-* `Get-NugetPackageVersions`
-* `Resolve-NugetPackageVersion`
+* `Get-NugetPackageMetadata`: retrieve metadata of a NuGet package from a feed. Works without downloading.
+* `Get-NugetPackageNuspec`: retrieve the full `nuspec` file of a NuGet package from an installed package directory, a local `.nupkg` file or a packcage from a feed. For this, the package needs to be downloaded.
+* `Get-NugetPackageVersions`: get all available versions for a package
+* `Resolve-NugetPackageVersion` : resolve a NuGet version range to the best matching availabel NuGet package
 
 ### Handling Dependency Information & Dependency Tree Resolution
 
-* `Get-NugetPackageDependencyInfo`
-* `Resolve-NugetPackageDependencies`
+* `Get-NugetPackageDependencyInfo` : retrieve dependency information for a NuGet package
+* `Resolve-NugetPackageDependencies` : resolve all transitive dependendencies of the given packages into a consistent package list that fulfills all version constraints
 
 ### Installation of NuGet Packages
 
-* `Install-NugetPackage`
+* `Install-NugetPackage` : downloads and extracts a NuGet package to a local folder
 
 ## Development
 
@@ -54,8 +54,9 @@ SCENARIOS: TBD
 For building the module, the following components are needed
 
 * `dotnet` (>6.0)
-* `InvokeBuild` Powershell module
-* `PlatyPS` Powershell module
+* `InvokeBuild` Powershell module for building
+* `PlatyPS` Powershell module for module xml help generation
+* `Pester` Powershell module for testing
 
 ### Build
 
@@ -75,8 +76,11 @@ sent a PR.
 
 ## License
 
-`NuGet.Powershell` is licensed under the terms of the MIT license. You can find
+`NuGet.Powershell` is licensed under the terms of the Apache 2.0 license. You can find
 the complete text in LICENSE.
+
+The implementation of `AsyncCmdlet` has been adapted from [PSKubectl](https://github.com/felixfbecker/PSKubectl)
+which is released under the MIT license (see `LICENSE.AsyncCmdlet`).
 
 Please refer to our [Contributors](https://github.com/ckolumbus/NuGet.PowerShell/graphs/contributors) page
 for a complete list of our contributors.

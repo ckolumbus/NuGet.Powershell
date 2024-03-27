@@ -56,7 +56,7 @@ namespace NuGet.PowerShell
         [Parameter( ParameterSetName = "Args", Position = 2, ValueFromPipelineByPropertyName = true)]
         [Parameter( ParameterSetName = "Args-ConfigFile", Position = 2, ValueFromPipelineByPropertyName = true)]
         [Parameter( ParameterSetName = "Args-ConfigArgs", Position = 2, ValueFromPipelineByPropertyName = true)]
-        public string Framework { get; set; } = "";
+        public string Framework { get; set; } = "any";
 
         [Parameter(ParameterSetName = "Args")]
         [Parameter(ParameterSetName = "Args-ConfigFile")]

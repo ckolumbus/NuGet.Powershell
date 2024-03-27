@@ -55,7 +55,7 @@ namespace NuGet.PowerShell
         public string VersionRange { get; set; }
 
         [Parameter]
-        public string Framework { get; set; } = "";
+        public string Framework { get; set; } = "any";
 
         [Parameter(ParameterSetName = "ConfigFile", Mandatory = true)]
         [Parameter(ParameterSetName = "DepObject-ConfigFile", Mandatory = true)]

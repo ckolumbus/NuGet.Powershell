@@ -43,10 +43,10 @@ namespace NuGet.PowerShell
         [Parameter(ParameterSetName = "Args", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
         [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
         [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
-        public string Version { get; set; }
+        public string VersionRange { get; set; }
 
         [Parameter]
-        public string Framework { get; set; } = "";
+        public string Framework { get; set; } = "any";
 
         [Parameter(ParameterSetName = "Object-ConfigFile", Mandatory = true)]
         [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true)]
@@ -96,7 +96,7 @@ namespace NuGet.PowerShell
         {
 
             if (ParameterSetName.StartsWith("Args")) {
-                var versionRange = VersionRange.Parse(Version);
+                var versionRange = Versioning.VersionRange.Parse(VersionRange);
                 PackageDependency = new[] { new PackageDependency(Id, versionRange) };
             }
 
