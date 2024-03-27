@@ -25,28 +25,53 @@ namespace NuGet.PowerShell
 
     public abstract class PSLoggerCmdlet : PSCmdlet, ILogger
     {
-        public void Log(LogLevel level, string data) => WriteVerbose(data);
+        public void Log(LogLevel level, string data) {
+            switch(level) {
+                case LogLevel.Debug:
+                    LogDebug(data);
+                    break;
+                case LogLevel.Verbose:
+                    LogVerbose(data);
+                    break;
+                case LogLevel.Minimal: //TODO: really "information"?
+                case LogLevel.Information:
+                    LogInformation(data);
+                    break;
+                case LogLevel.Warning:
+                    LogWarning(data);
+                    break;
+                case LogLevel.Error:
+                    LogError(data);
+                    break;
+                default:
+                    LogVerbose(data);
+                    break;
+            }
+        }
 
         public void Log(ILogMessage message)
         {
-            throw new NotImplementedException();
+            Log(message.Level, message.Message);
         }
 
         public Task LogAsync(LogLevel level, string data)
         {
-            throw new NotImplementedException();
+            Log(level, data);
+            return Task.CompletedTask;
+
         }
 
         public Task LogAsync(ILogMessage message)
         {
-            throw new NotImplementedException();
+            Log(message);
+            return Task.CompletedTask;
         }
 
         public void LogDebug(string data) => WriteDebug(data);
         public void LogError(string data) => WriteError(new ErrorRecord(new Exception(data), "PSLoggerCmdlet", ErrorCategory.NotSpecified , this));
         public void LogInformation(string data) => WriteInformation(new InformationRecord(data, ""));
         public void LogInformationSummary(string data) => WriteInformation(new InformationRecord(data, ""));
-        public void LogMinimal(string data) => WriteDebug(data);
+        public void LogMinimal(string data) => WriteVerbose(data);
         public void LogVerbose(string data) => WriteVerbose(data);
         public void LogWarning(string data) => WriteVerbose(data);
     }
