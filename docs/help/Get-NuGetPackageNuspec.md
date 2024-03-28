@@ -8,10 +8,7 @@ schema: 2.0.0
 # Get-NuGetPackageNuspec
 
 ## SYNOPSIS
-Get the `nuspec`s for provided package identities as `XmlDocument`.
-
-Can read from local directories (see `Install-NugetPackage`), local `.nupkg`
-files and remote packages. For the latter the packages needs to be downloaded.
+Get the `nuspec` content for provided package identities as `XmlDocument`.
 
 ## SYNTAX
 
@@ -73,7 +70,10 @@ Get-NuGetPackageNuspec -Source <String> [-SourceProtocolVersion <Int32>] [-Sourc
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Returns a `XmlDocument` with the `.nuspec` file content of the given package.
+
+It can retrieve the content from local directories (see `Install-NugetPackage`), local `.nupkg`
+files and remote packages. For remote packages, the package needs to be downloaded.
 
 ## EXAMPLES
 
@@ -87,7 +87,8 @@ PS C:\> {{ Add example code here }}
 ## PARAMETERS
 
 ### -ConfigFile
-{{ Fill ConfigFile Description }}
+Path to the NuGet config file to use, if neither  `-ConfigFile` nor `-Source` is provide,
+the standard configs are used.
 
 ```yaml
 Type: String
@@ -114,7 +115,8 @@ Accept wildcard characters: False
 ```
 
 ### -Directory
-{{ Fill Directory Description }}
+Try to read data from a local directory where a NuGet package has been extracted,
+e.g. with `Install-NugetPackage` or `nuget.exe install`.
 
 ```yaml
 Type: String[]
@@ -129,7 +131,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+The Id of the package for which to get the nuspec file content.
 
 ```yaml
 Type: String
@@ -144,7 +146,8 @@ Accept wildcard characters: False
 ```
 
 ### -PackageIdentity
-{{ Fill PackageIdentity Description }}
+A list of NuGet identity objects describing the packages to analayze
+(see `New-NugetPackageIdentity` for a way to create such an object)
 
 ```yaml
 Type: PackageIdentity[]
@@ -159,7 +162,7 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-{{ Fill Path Description }}
+Try to read data from a local nuget package file `.nupkg`.
 
 ```yaml
 Type: String[]
@@ -174,11 +177,11 @@ Accept wildcard characters: False
 ```
 
 ### -Source
-{{ Fill Source Description }}
+The path or url to a NuGet package feed to be used.
 
 ```yaml
 Type: String
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 
 Required: True
@@ -189,11 +192,11 @@ Accept wildcard characters: False
 ```
 
 ### -SourceCredential
-{{ Fill SourceCredential Description }}
+The credentials for the `-Source` feed, if needed.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
 Aliases:
 
 Required: False
@@ -204,23 +207,24 @@ Accept wildcard characters: False
 ```
 
 ### -SourceProtocolVersion
-{{ Fill SourceProtocolVersion Description }}
+The protocol version of the `-Source` feed, defaults to `3`.
 
 ```yaml
 Type: Int32
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 Accepted values: 2, 3
 
 Required: False
 Position: Named
-Default value: None
+Default value: 3
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Version
-{{ Fill Version Description }}
+The version of the package for which to get the nuspec content, e.g. `13.2.3`
+(no floating versions or version ranges allowed).
 
 ```yaml
 Type: String

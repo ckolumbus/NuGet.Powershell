@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-NuGetPackageMetadata
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Fetch NuGet package metadata for a package without actually downloading the package itself.
 
 ## SYNTAX
 
@@ -61,21 +61,57 @@ Get-NuGetPackageMetadata -Source <String> [-SourceProtocolVersion <Int32>] [-Sou
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This cmdlet uses the [NuGet V3 Package Metadata API](https://learn.microsoft.com/en-us/nuget/api/registration-base-url-resource)
+to retrieve metadat for a package without actually downloading the package itself.
+
+This can safe time and bandwidth in cases where the actual package content is not needed.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-NuGetPackageMetadata Serilog 3.1.1
+
+CatalogUri               : https://api.nuget.org/v3/catalog0/data/2023.11.10.12.46.06/serilog.3.1.1.json
+Authors                  : Serilog Contributors
+DependencySetsInternal   : {[.NETFramework,Version=v4.6.2] (System.Diagnostics.DiagnosticSource [7.0.2, ), System.ValueTuple [4.5.0, )), [.NETFramework,Version=v4.7.1] (System.Diagnostics.DiagnosticSource [7.0.2, )), [net5.0] (),
+                           [net6.0] ()...}
+DependencySets           : {[.NETFramework,Version=v4.6.2] (System.Diagnostics.DiagnosticSource [7.0.2, ), System.ValueTuple [4.5.0, )), [.NETFramework,Version=v4.7.1] (System.Diagnostics.DiagnosticSource [7.0.2, )), [net5.0] (),
+                           [net6.0] ()...}
+Description              : Simple .NET logging with fully-structured events
+DownloadCount            :
+IconUrl                  : https://api.nuget.org/v3-flatcontainer/serilog/3.1.1/icon
+Identity                 : Serilog.3.1.1
+LicenseUrl               : https://www.nuget.org/packages/Serilog/3.1.1/license
+Owners                   :
+PackageId                : Serilog
+ProjectUrl               : https://serilog.net/
+Published                : 10.11.2023 13:43:00 +01:00
+ReadmeUrl                : https://www.nuget.org/packages/Serilog/3.1.1#show-readme-container
+ReportAbuseUrl           : https://www.nuget.org/packages/Serilog/3.1.1/ReportAbuse
+PackageDetailsUrl        : https://www.nuget.org/packages/Serilog/3.1.1?_src=template
+RequireLicenseAcceptance : False
+Summary                  : Simple .NET logging with fully-structured events
+Tags                     : serilog, logging, semantic, structured
+Title                    : Serilog
+Version                  : 3.1.1
+ParsedVersions           :
+PrefixReserved           : False
+LicenseExpression        : Apache-2.0
+LicenseExpressionVersion :
+LicenseMetadata          : NuGet.Packaging.LicenseMetadata
+IsListed                 : True
+DeprecationMetadata      :
+Vulnerabilities          :
 ```
 
-{{ Add example description here }}
+Get metadata for `Serilog` package
 
 ## PARAMETERS
 
 ### -ConfigFile
-{{ Fill ConfigFile Description }}
+Path to the NuGet config file to use, if neither  `-ConfigFile` nor `-Source` is provide,
+the standard configs are used.
 
 ```yaml
 Type: String
@@ -102,7 +138,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+The Id of the package for which to get the metadata.
 
 ```yaml
 Type: String
@@ -117,7 +153,8 @@ Accept wildcard characters: False
 ```
 
 ### -PackageIdentity
-{{ Fill PackageIdentity Description }}
+A list of NuGet identity objects describing the packages to analayze
+(see `New-NugetPackageIdentity` for a way to create such an object)
 
 ```yaml
 Type: PackageIdentity[]
@@ -132,11 +169,11 @@ Accept wildcard characters: False
 ```
 
 ### -Source
-{{ Fill Source Description }}
+The path or url to a NuGet package feed to be used.
 
 ```yaml
 Type: String
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 
 Required: True
@@ -147,11 +184,11 @@ Accept wildcard characters: False
 ```
 
 ### -SourceCredential
-{{ Fill SourceCredential Description }}
+The credentials for the `-Source` feed, if needed.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
 Aliases:
 
 Required: False
@@ -162,23 +199,24 @@ Accept wildcard characters: False
 ```
 
 ### -SourceProtocolVersion
-{{ Fill SourceProtocolVersion Description }}
+The protocol version of the `-Source` feed, defaults to `3`.
 
 ```yaml
 Type: Int32
-Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
+Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
 Aliases:
 Accepted values: 2, 3
 
 Required: False
 Position: Named
-Default value: None
+Default value: 3
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -Version
-{{ Fill Version Description }}
+The version of the package for which to get the metadata, e.g. `13.2.3`
+(no floating versions or version ranges allowed).
 
 ```yaml
 Type: String
@@ -198,10 +236,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity[]
-### System.String
+
 ## OUTPUTS
 
-### NuGet.Packaging.Core.PackageIdentity
+### NuGet.Protocol.PackageSearchMetaData
+
 ## NOTES
 
 ## RELATED LINKS
