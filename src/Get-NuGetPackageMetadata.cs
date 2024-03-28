@@ -16,9 +16,11 @@
 */
 
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Common;
 using NuGet.Packaging.Core;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
