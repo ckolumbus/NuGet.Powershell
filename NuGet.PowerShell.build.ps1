@@ -33,7 +33,7 @@ param(
     [string] $BuildOutputDir
 )
 
-$ModuleName = "NuGet.PowerShell"
+$ModuleName = "NuGet.Powershell"
 if ([string]::IsNullOrEmpty($BuildOutputDir)) {
     $distDir = "$BuildRoot/dist"
 } else {
@@ -99,7 +99,7 @@ task build restore, version, {
     # make manifest
     Set-Content "$moduleDir\$ModuleName.psd1" @"
 @{
-    RootModule = 'NuGet.PowerShell.dll'
+    RootModule = 'NuGet.Powershell.dll'
     ModuleVersion = '$script:Version'
     GUID = '90d98f7e-3d3e-4870-93fa-d50557d7b999'
     Author = 'Chris Drexler'
