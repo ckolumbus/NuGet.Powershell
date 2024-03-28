@@ -67,6 +67,9 @@ namespace NuGet.PowerShell
         public string OutputPath { get; set; } = ".";
 
         [Parameter]
+        public SwitchParameter Force { get; set; } = false;
+
+        [Parameter]
         public SwitchParameter UseSideBySidePaths { get; set; } = false;
 
         [Parameter(ParameterSetName = "Object-ConfigFile", Mandatory = true)]
@@ -140,15 +143,25 @@ namespace NuGet.PowerShell
                 foreach (var pathArg in Path) {
                     var path = Helpers.GetRootedPath(pathArg, root: cwd);
                     WriteVerbose($"Installing from Path : {path}");
-                    var packageReader = new PackageArchiveReader(path);
 
-                    await PackageExtractor.ExtractPackageAsync(
-                        path,
-                        packageReader,
-                        packagePathResolver,
-                        packageExtractionContext,
-                        CancellationToken.None);
+                    PackageReaderBase packageReader;
+                    var packageReaderPkg = new PackageArchiveReader(path);
 
+                    var installedPath = packagePathResolver.GetInstallPath(packageReaderPkg.GetIdentity());
+
+                    if (!Directory.Exists(installedPath) || Force)
+                    {
+                        await PackageExtractor.ExtractPackageAsync(
+                            path,
+                            packageReaderPkg,
+                            packagePathResolver,
+                            packageExtractionContext,
+                            CancellationToken.None);
+
+                        packageReader = packageReaderPkg;
+                    } else {
+                        packageReader = new PackageFolderReader(installedPath);
+                    }
                     WriteObject(packageReader);
                 }
             } else if ((null != SourcePackageDependencyInfo) && (SourcePackageDependencyInfo.Length > 0))
@@ -172,7 +185,7 @@ namespace NuGet.PowerShell
                     PackageReaderBase packageReader;
                     var installedPath = packagePathResolver.GetInstallPath(packageToInstall);
 
-                    if (!Directory.Exists(installedPath))
+                    if (!Directory.Exists(installedPath) || Force)
                     {
                         await PackageExtractor.ExtractPackageAsync(
                             downloadResult.PackageSource,
