@@ -50,7 +50,7 @@ namespace NuGet.PowerShell
         [Parameter(
             ParameterSetName = "Cred",
             Position = 2)]
-        public PSCredential SourceCredential { get; set; } = PSCredential.Empty;
+        public PSCredential SourceCredential { get; set; } = null;
 
 
         private string cwd;

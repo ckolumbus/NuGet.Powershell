@@ -80,7 +80,7 @@ namespace NuGet.PowerShell
         [Parameter(ParameterSetName = "Object-ConfigArgs")]
         [Parameter(ParameterSetName = "DepObject-ConfigFile")]
         [Parameter(ParameterSetName = "Args-ConfigArgs")]
-        public PSCredential SourceCredential { get; set; } = PSCredential.Empty;
+        public PSCredential SourceCredential { get; set; } = null;
 
         private NuGetFramework nuGetFramework;
         private List<SourceRepository> repositories = new List<SourceRepository>();
@@ -96,7 +96,7 @@ namespace NuGet.PowerShell
             cwd = SessionState.Path.CurrentFileSystemLocation.Path;
             if ( Source != "") {
                 var rootedSource = Helpers.GetRootedPath(Source, cwd);
-                var repository = Helpers.GetRepository(rootedSource, SourceCredential.GetNetworkCredential(), SourceProtocolVersion, logger:this);
+                var repository = Helpers.GetRepository(rootedSource, SourceCredential?.GetNetworkCredential(), SourceProtocolVersion, logger:this);
                 repositories.Add(repository);
             } else {
                 var settings = Helpers.GetSettings(ConfigFile, ctx: this, logger: this);

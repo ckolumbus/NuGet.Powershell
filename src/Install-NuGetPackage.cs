@@ -88,7 +88,7 @@ namespace NuGet.PowerShell
 
         [Parameter(ParameterSetName = "Object-ConfigArgs")]
         [Parameter(ParameterSetName = "Args-ConfigArgs")]
-        public PSCredential SourceCredential { get; set; } = PSCredential.Empty;
+        public PSCredential SourceCredential { get; set; } = null;
 
         private NuGetFramework nuGetFramework;
         private ISettings settings;
@@ -107,7 +107,7 @@ namespace NuGet.PowerShell
             cwd = SessionState.Path.CurrentFileSystemLocation.Path;
             if ( Source != "") {
                 var rootedSource = Helpers.GetRootedPath(Source, root: cwd);
-                var repository = Helpers.GetRepository(rootedSource, SourceCredential.GetNetworkCredential(), SourceProtocolVersion, logger:this);
+                var repository = Helpers.GetRepository(rootedSource, SourceCredential?.GetNetworkCredential(), SourceProtocolVersion, logger:this);
                 repositories.Add(repository);
             } else {
                 WriteVerbose("Read settings from nuget config files");

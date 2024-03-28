@@ -72,7 +72,7 @@ namespace NuGet.PowerShell
         [Parameter(ParameterSetName = "ConfigArgs")]
         [Parameter(ParameterSetName = "Object-ConfigArgs")]
         [Parameter(ParameterSetName = "Args-ConfigArgs")]
-        public PSCredential SourceCredential { get; set; } = PSCredential.Empty;
+        public PSCredential SourceCredential { get; set; } = null;
 
         private List<SourceRepository> repositories = new List<SourceRepository>();
         private SourceCacheContext cache = new SourceCacheContext();
@@ -84,7 +84,7 @@ namespace NuGet.PowerShell
             if (Source != "")
             {
                 var rootedSource = Helpers.GetRootedPath(Source, cwd);
-                var repository = Helpers.GetRepository(rootedSource, SourceCredential.GetNetworkCredential(), SourceProtocolVersion, logger: this);
+                var repository = Helpers.GetRepository(rootedSource, SourceCredential?.GetNetworkCredential(), SourceProtocolVersion, logger: this);
                 repositories.Add(repository);
             }
             else
