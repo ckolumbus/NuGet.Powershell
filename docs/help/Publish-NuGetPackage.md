@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,24 +8,20 @@ schema: 2.0.0
 # Publish-NuGetPackage
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Publish a local NuGet package file to a NuGet feed.
 
 ## SYNTAX
 
 ### ApiKey (Default)
 ```
-Publish-NuGetPackage [-Path] <String[]> [-Source] <String> [[-ApiKey] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Publish-NuGetPackage [-Path] <String[]> [-Source] <String> [[-ApiKey] <String>] [<CommonParameters>]
 ```
 
 ### Cred
 ```
 Publish-NuGetPackage [-Path] <String[]> [-Source] <String> [[-SourceCredential] <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
-
-## DESCRIPTION
-{{ Fill in the Description }}
 
 ## EXAMPLES
 
@@ -99,7 +95,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

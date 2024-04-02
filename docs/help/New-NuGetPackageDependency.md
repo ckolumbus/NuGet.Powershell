@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,17 +8,14 @@ schema: 2.0.0
 # New-NuGetPackageDependency
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Creates a NuGet `PackageDependency` object from the provided paramters.
 
 ## SYNTAX
 
 ```
 New-NuGetPackageDependency [-Id] <String> [-VersionRange] <String> [[-Include] <String[]>]
- [[-Exclude] <String[]>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-Exclude] <String[]>] [<CommonParameters>]
 ```
-
-## DESCRIPTION
-{{ Fill in the Description }}
 
 ## EXAMPLES
 
@@ -73,21 +70,6 @@ Required: False
 Position: 2
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -ProgressAction
-{{ Fill ProgressAction Description }}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

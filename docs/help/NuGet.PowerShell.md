@@ -1,28 +1,31 @@
 ﻿---
-Module Name: NuGet.PowerShell
+Module Name: NuGet.Powershell
 Module Guid: {{ Update Module Guid }}
 Download Help Link: {{ Update Download Link }}
 Help Version: {{ Update Help Version }}
 Locale: {{ Update Locale }}
 ---
 
-# NuGet.PowerShell Module
+# NuGet.Powershell Module
 ## Description
 {{ Fill in the Description }}
 
-## NuGet.PowerShell Cmdlets
+## NuGet.Powershell Cmdlets
 ### [Get-NuGetPackageDependencyInfo](Get-NuGetPackageDependencyInfo.md)
 Get the dependencies for package identified by an Id and a NuGet VersionRange. It can provide
 only direct dependencies or the full list of transitive dependency objects.
 
+### [Get-NuGetPackageIdentityFromFolder](Get-NuGetPackageIdentityFromFolder.md)
+Retrive NuGet version for local folder that contains NuGet package content.
+
 ### [Get-NuGetPackageMetadata](Get-NuGetPackageMetadata.md)
-{{ Fill in the Synopsis }}
+Fetch NuGet package metadata for a package without actually downloading the package itself.
 
 ### [Get-NuGetPackageNuspec](Get-NuGetPackageNuspec.md)
-Get the `nuspec`s for provided package identities as `XmlDocument`.
+Get the `nuspec` content for provided package identities as `XmlDocument`.
 
-Can read from local files and remote packages. For the latter the packages needs
-to be downloaded.
+### [Get-NuGetPackageIdentityFromFolder](Get-NuGetPackageIdentityFromFolder.md)
+Retrive NuGet version for local folder that contains NuGet package content.
 
 ### [Get-NuGetPackageVersions](Get-NuGetPackageVersions.md)
 {{ Fill in the Synopsis }}
@@ -31,7 +34,7 @@ to be downloaded.
 {{ Fill in the Synopsis }}
 
 ### [New-NuGetPackage](New-NuGetPackage.md)
-{{ Fill in the Synopsis }}
+Create a new nuget package from use a nuspec file, command line paramters or both.
 
 ### [New-NuGetPackageDependency](New-NuGetPackageDependency.md)
 {{ Fill in the Synopsis }}

@@ -5,21 +5,24 @@ online version:
 schema: 2.0.0
 ---
 
-# New-NuGetPackageIdentity
+# Get-NuGetPackageIdentityFromFolder
 
 ## SYNOPSIS
-Creates a NuGet `PackageIdentity` object from the provided paramters.
+Retrive NuGet version for local folder that contains NuGet package content.
 
 ## SYNTAX
 
 ```
-New-NuGetPackageIdentity [-Id] <String> [-Version] <String> [<CommonParameters>]
+Get-NuGetPackageIdentityFromFolder -Path <String[]> [<CommonParameters>]
 ```
+
+## DESCRIPTION
+Reads NuGet package information from a local folder and returns a \`PackageIdentity\` object if actual NuGet package content has been found.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> {{ Add example code here }}
 ```
 
@@ -27,33 +30,18 @@ PS C:\> {{ Add example code here }}
 
 ## PARAMETERS
 
-### -Id
-{{ Fill Id Description }}
+### -Path
+{{ Fill Path Description }}
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: Named
 Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Version
-{{ Fill Version Description }}
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: True (ByPropertyName, ByValue)
 Accept wildcard characters: False
 ```
 
@@ -62,10 +50,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String
+### System.String[]
+list of directories to read the data from
+
 ## OUTPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity
+the package identitie retrieved from the input directory
+
 ## NOTES
 
 ## RELATED LINKS

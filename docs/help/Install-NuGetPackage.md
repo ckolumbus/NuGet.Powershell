@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,63 +8,62 @@ schema: 2.0.0
 # Install-NuGetPackage
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Download and unpack a nuget package to a local directory.
 
 ## SYNTAX
 
 ### Object (Default)
 ```
 Install-NuGetPackage [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]> [-OutputPath <String>]
- [-UseSideBySidePaths] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Force] [-UseSideBySidePaths] [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
 Install-NuGetPackage [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]> [-OutputPath <String>]
- [-UseSideBySidePaths] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Force] [-UseSideBySidePaths] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Install-NuGetPackage [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]> [-OutputPath <String>]
- [-UseSideBySidePaths] -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Force] [-UseSideBySidePaths] -Source <String> [-SourceProtocolVersion <Int32>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### Path
 ```
-Install-NuGetPackage [-Path] <String[]> [-OutputPath <String>] [-UseSideBySidePaths]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Install-NuGetPackage [-Path] <String[]> [-OutputPath <String>] [-Force] [-UseSideBySidePaths]
+ [<CommonParameters>]
 ```
 
 ### Path-ConfigFile
 ```
-Install-NuGetPackage [-Path] <String[]> [-OutputPath <String>] [-UseSideBySidePaths] -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Install-NuGetPackage [-Path] <String[]> [-OutputPath <String>] [-Force] [-UseSideBySidePaths]
+ -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args
 ```
 Install-NuGetPackage [-Id] <String> [-Version] <String> [[-Framework] <String>] [-Name <String>]
- [-OutputPath <String>] [-UseSideBySidePaths] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-OutputPath <String>] [-Force] [-UseSideBySidePaths] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
 Install-NuGetPackage [-Id] <String> [-Version] <String> [[-Framework] <String>] [-Name <String>]
- [-OutputPath <String>] [-UseSideBySidePaths] -ConfigFile <String> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-OutputPath <String>] [-Force] [-UseSideBySidePaths] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Install-NuGetPackage [-Id] <String> [-Version] <String> [[-Framework] <String>] [-Name <String>]
- [-OutputPath <String>] [-UseSideBySidePaths] -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-OutputPath <String>] [-Force] [-UseSideBySidePaths] -Source <String> [-SourceProtocolVersion <Int32>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Downloads a nuget pacakge from the configured feed(s) and unpacks the content the output path.
 
 ## EXAMPLES
 
@@ -86,6 +85,21 @@ Parameter Sets: Object-ConfigFile, Path-ConfigFile, Args-ConfigFile
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Force
+{{ Fill Force Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -259,7 +273,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

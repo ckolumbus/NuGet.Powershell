@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -18,70 +18,67 @@ packages if the resolution attempt is successful.
 ### InfoObject (Default)
 ```
 Resolve-NuGetPackageDependencies [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]>
- [-Framework <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Framework <String>] [<CommonParameters>]
 ```
 
 ### DepObject
 ```
 Resolve-NuGetPackageDependencies [-PackageDependency] <PackageDependency[]> [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### DepObject-ConfigFile
 ```
 Resolve-NuGetPackageDependencies [-PackageDependency] <PackageDependency[]> [-Framework <String>]
- -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### DepObject-ConfigArgs
 ```
 Resolve-NuGetPackageDependencies [-PackageDependency] <PackageDependency[]> [-Framework <String>]
- -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### InfoObject-ConfigFile
 ```
 Resolve-NuGetPackageDependencies [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]>
- [-Framework <String>] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-Framework <String>] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### InfoObject-ConfigArgs
 ```
 Resolve-NuGetPackageDependencies [-SourcePackageDependencyInfo] <SourcePackageDependencyInfo[]>
  [-Framework <String>] -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### Args
 ```
 Resolve-NuGetPackageDependencies [-Id] <String> [-VersionRange] <String> [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
 Resolve-NuGetPackageDependencies [-Id] <String> [-VersionRange] <String> [-Framework <String>]
- -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Resolve-NuGetPackageDependencies [-Id] <String> [-VersionRange] <String> [-Framework <String>] -Source <String>
- [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### ConfigFile
 ```
-Resolve-NuGetPackageDependencies [-Framework <String>] -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Resolve-NuGetPackageDependencies [-Framework <String>] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### ConfigArgs
 ```
 Resolve-NuGetPackageDependencies [-Framework <String>] -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -235,7 +232,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

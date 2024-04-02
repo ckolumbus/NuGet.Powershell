@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -14,50 +14,45 @@ Fetch NuGet package metadata for a package without actually downloading the pack
 
 ### Object
 ```
-Get-NuGetPackageMetadata [-PackageIdentity] <PackageIdentity[]> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-NuGetPackageMetadata [-PackageIdentity] <PackageIdentity[]> [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
-Get-NuGetPackageMetadata [-PackageIdentity] <PackageIdentity[]> -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageMetadata [-PackageIdentity] <PackageIdentity[]> -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Get-NuGetPackageMetadata [-PackageIdentity] <PackageIdentity[]> -Source <String>
- [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### Args
 ```
-Get-NuGetPackageMetadata [-Id] <String> [-Version] <String> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-NuGetPackageMetadata [-Id] <String> [-Version] <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
-Get-NuGetPackageMetadata [-Id] <String> [-Version] <String> -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageMetadata [-Id] <String> [-Version] <String> -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Get-NuGetPackageMetadata [-Id] <String> [-Version] <String> -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### ConfigFile
 ```
-Get-NuGetPackageMetadata [-ConfigFile <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageMetadata [-ConfigFile <String>] [<CommonParameters>]
 ```
 
 ### ConfigArgs
 ```
 Get-NuGetPackageMetadata -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -65,6 +60,8 @@ This cmdlet uses the [NuGet V3 Package Metadata API](https://learn.microsoft.com
 to retrieve metadat for a package without actually downloading the package itself.
 
 This can safe time and bandwidth in cases where the actual package content is not needed.
+
+Caveat: the returned data structure dependends on the server implementation of the Metadata API!
 
 ## EXAMPLES
 
@@ -173,7 +170,7 @@ The path or url to a NuGet package feed to be used.
 
 ```yaml
 Type: String
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 
 Required: True
@@ -188,7 +185,7 @@ The credentials for the `-Source` feed, if needed.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 
 Required: False
@@ -203,7 +200,7 @@ The protocol version of the `-Source` feed, defaults to `3`.
 
 ```yaml
 Type: Int32
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 Accepted values: 2, 3
 
@@ -231,16 +228,14 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### NuGet.Packaging.Core.PackageIdentity[]
-
 ## OUTPUTS
 
 ### NuGet.Protocol.PackageSearchMetaData
-
 ## NOTES
 
 ## RELATED LINKS

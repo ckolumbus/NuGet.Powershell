@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,25 +8,34 @@ schema: 2.0.0
 # New-NuGetPackage
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Create a new NuGet package from use a nuspec file, command line paramters or both.
 
 ## SYNTAX
 
-### File (Default)
 ```
-New-NuGetPackage [-ManifestFile] <String> [-Framework <String>] [-OutputPath <String>]
- [-OutputFilename <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
-### Args
-```
-New-NuGetPackage [-Path] <String> [-Id] <String> [-Version] <String> [-Authors] <String[]>
- [-Description] <String> [[-Dependencies] <Hashtable>] [-Framework <String>] [-OutputPath <String>]
- [-OutputFilename <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+New-NuGetPackage [[-Id] <String>] [[-Version] <String>] [[-Authors] <String[]>] [[-Description] <String>]
+ [-ContentPath <String>] [[-Dependencies] <Hashtable>] [-FilesMapping <Hashtable>] [[-ManifestFile] <String>]
+ [-Framework <String>] [-OutputPath <String>] [-OutputFilename <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Create a NuGet package using by either
+
+* using the content of a nuspec manifest file
+* only the provided command line parameter for ad-hoc package generation
+* or a combination where the command line paramter overwrite or extend the data loaded from manifest file
+
+The command line parammters allow to set/extend the following nuspec elements
+
+* metadata/id (overwrite)
+* metadata/version (overwrite)
+* metadata/description (overwrite)
+* metdata/authors (add)
+* dependencies (add)
+* files (add)
+
+A simplified way of setting the nupkg content is by providing the `ContentPath` paramter: everything
+in this path will be recursively added to the nupkg root dir.
 
 ## EXAMPLES
 
@@ -44,11 +53,26 @@ PS C:\> {{ Add example code here }}
 
 ```yaml
 Type: String[]
-Parameter Sets: Args
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ContentPath
+{{ Fill ContentPath Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -59,7 +83,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: Hashtable
-Parameter Sets: Args
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -74,11 +98,26 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: Args
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -FilesMapping
+{{ Fill FilesMapping Description }}
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -104,10 +143,10 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: Args
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 1
 Default value: None
 Accept pipeline input: False
@@ -119,10 +158,10 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: File
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: False
@@ -159,30 +198,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Path
-{{ Fill Path Description }}
-
-```yaml
-Type: String
-Parameter Sets: Args
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Version
 {{ Fill Version Description }}
 
 ```yaml
 Type: String
-Parameter Sets: Args
+Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False
@@ -190,7 +214,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

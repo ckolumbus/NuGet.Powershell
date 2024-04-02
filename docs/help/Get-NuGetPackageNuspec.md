@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -14,59 +14,55 @@ Get the `nuspec` content for provided package identities as `XmlDocument`.
 
 ### Directory
 ```
-Get-NuGetPackageNuspec -Directory <String[]> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageNuspec -Directory <String[]> [<CommonParameters>]
 ```
 
 ### Path
 ```
-Get-NuGetPackageNuspec [-Path] <String[]> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageNuspec [-Path] <String[]> [<CommonParameters>]
 ```
 
 ### Object
 ```
-Get-NuGetPackageNuspec [-PackageIdentity] <PackageIdentity[]> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-NuGetPackageNuspec [-PackageIdentity] <PackageIdentity[]> [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
-Get-NuGetPackageNuspec [-PackageIdentity] <PackageIdentity[]> -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageNuspec [-PackageIdentity] <PackageIdentity[]> -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Get-NuGetPackageNuspec [-PackageIdentity] <PackageIdentity[]> -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### Args
 ```
-Get-NuGetPackageNuspec [-Id] <String> [-Version] <String> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-NuGetPackageNuspec [-Id] <String> [-Version] <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
-Get-NuGetPackageNuspec [-Id] <String> [-Version] <String> -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageNuspec [-Id] <String> [-Version] <String> -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Get-NuGetPackageNuspec [-Id] <String> [-Version] <String> -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### ConfigFile
 ```
-Get-NuGetPackageNuspec [-ConfigFile <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageNuspec [-ConfigFile <String>] [<CommonParameters>]
 ```
 
 ### ConfigArgs
 ```
 Get-NuGetPackageNuspec -Source <String> [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -181,7 +177,7 @@ The path or url to a NuGet package feed to be used.
 
 ```yaml
 Type: String
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 
 Required: True
@@ -196,7 +192,7 @@ The credentials for the `-Source` feed, if needed.
 
 ```yaml
 Type: PSCredential
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigFile, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 
 Required: False
@@ -211,7 +207,7 @@ The protocol version of the `-Source` feed, defaults to `3`.
 
 ```yaml
 Type: Int32
-Parameter Sets: Object-ConfigArgs, DepObject-ConfigArgs, Args-ConfigArgs
+Parameter Sets: Object-ConfigArgs, Args-ConfigArgs, ConfigArgs
 Aliases:
 Accepted values: 2, 3
 
@@ -239,7 +235,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

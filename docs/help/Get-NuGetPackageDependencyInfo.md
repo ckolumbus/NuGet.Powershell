@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -16,59 +16,57 @@ only direct dependencies or the full list of transitive dependency objects.
 ### Args (Default)
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [<CommonParameters>]
 ```
 
 ### Object
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-PackageIdentity] <PackageIdentity[]> [-Recurse] [-Framework <String>]
  [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### DepObject
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] [<CommonParameters>]
 ```
 
 ### DepObject-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] -ConfigFile <String> [-SourceCredential <PSCredential>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### DepObject-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-PackageDependency] <PackageDependency[]> [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
- [-RemoveTopLevelDependencies] -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-RemoveTopLevelDependencies] -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Get-NuGetPackageDependencyInfo [-Id] <String> [-VersionRange <String>] [-Recurse] [-Framework <String>]
  [-RemoveTopLevelDependencies] -Source <String> [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -269,7 +267,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

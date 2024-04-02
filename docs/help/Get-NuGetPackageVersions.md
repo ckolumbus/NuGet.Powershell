@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,25 +8,23 @@ schema: 2.0.0
 # Get-NuGetPackageVersions
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get a list of all available versions for the given packages ids.
 
 ## SYNTAX
 
 ### ConfigFile
 ```
-Get-NuGetPackageVersions [-Id] <String[]> [-Framework <String>] [-ConfigFile <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-NuGetPackageVersions [-Id] <String[]> [-Framework <String>] [-ConfigFile <String>] [<CommonParameters>]
 ```
 
 ### ConfigArgs
 ```
 Get-NuGetPackageVersions [-Id] <String[]> [-Framework <String>] -Source <String>
- [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Returns a list of all available version for the given package ids across all configured nuget feeds.
 
 ## EXAMPLES
 
@@ -131,7 +129,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

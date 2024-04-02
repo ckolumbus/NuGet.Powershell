@@ -1,6 +1,6 @@
 ﻿---
-external help file: NuGet.PowerShell.dll-Help.xml
-Module Name: NuGet.PowerShell
+external help file: NuGet.Powershell.dll-Help.xml
+Module Name: NuGet.Powershell
 online version:
 schema: 2.0.0
 ---
@@ -8,56 +8,54 @@ schema: 2.0.0
 # Resolve-NuGetPackageVersion
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Resolve a NuGet version range or floating version specification to a concrete version number.
 
 ## SYNTAX
 
 ### Object (Default)
 ```
 Resolve-NuGetPackageVersion [-PackageDependency] <PackageDependency[]> [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### Object-ConfigFile
 ```
 Resolve-NuGetPackageVersion [-PackageDependency] <PackageDependency[]> [-Framework <String>]
- -ConfigFile <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ -ConfigFile <String> [<CommonParameters>]
 ```
 
 ### Object-ConfigArgs
 ```
 Resolve-NuGetPackageVersion [-PackageDependency] <PackageDependency[]> [-Framework <String>] -Source <String>
- [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### Args
 ```
-Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>] [<CommonParameters>]
 ```
 
 ### Args-ConfigFile
 ```
 Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>] -ConfigFile <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [<CommonParameters>]
 ```
 
 ### Args-ConfigArgs
 ```
 Resolve-NuGetPackageVersion [-Id] <String> -VersionRange <String> [-Framework <String>] -Source <String>
- [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [-SourceProtocolVersion <Int32>] [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ### ConfigArgs
 ```
 Resolve-NuGetPackageVersion [-Framework <String>] [-SourceProtocolVersion <Int32>]
- [-SourceCredential <PSCredential>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-SourceCredential <PSCredential>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Searches for the best matching version within the list of existing versions for a version range or
+a floating verson specification.
 
 ## EXAMPLES
 
@@ -204,7 +202,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
