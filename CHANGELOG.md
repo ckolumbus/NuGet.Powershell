@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.2-alpha
+- feat: improve New-NuGetPackage cmdlet
+  - manifest file & command line arguments can be used together
+  - hash table added as input for files mapping
+  - dependencies can be provided in short from (version only) or full (with includes/excluds)
+
 ## 0.0.1
 - logging infrastructure in place but disabled due to threading issues
 - initial release - basic functionality for creating, searching, resolving and installing
