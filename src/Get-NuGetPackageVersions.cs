@@ -46,7 +46,7 @@ namespace NuGet.PowerShell
 
         [Parameter(ParameterSetName = "ConfigArgs")]
         [ValidateSet(new string[] { "2", "3" })]
-        public int SourceProtocolVersion { get; set; } = 3;
+        public int SourceProtocolVersion { get; set; } = 2;
 
         [Parameter(ParameterSetName = "ConfigArgs")]
         public PSCredential SourceCredential { get; set; } = null;

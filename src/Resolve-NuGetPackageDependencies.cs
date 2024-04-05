@@ -74,7 +74,7 @@ namespace NuGet.PowerShell
         [Parameter(ParameterSetName = "InfoObject-ConfigArgs")]
         [Parameter(ParameterSetName = "Args-ConfigArgs")]
         [ValidateSet(new string[] { "2", "3" })]
-        public int SourceProtocolVersion { get; set; } = 3;
+        public int SourceProtocolVersion { get; set; } = 2;
 
         [Parameter(ParameterSetName = "ConfigArgs")]
         [Parameter(ParameterSetName = "DepObject-ConfigArgs")]
