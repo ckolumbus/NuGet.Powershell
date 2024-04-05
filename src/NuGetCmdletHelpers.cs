@@ -177,7 +177,7 @@ namespace NuGet.PowerShell
             IEnumerable<SourceRepository> repositories = new PackageSourceProvider(settings)
                 .LoadPackageSources()
                 .Where(source => source.IsEnabled)
-                .Select(source => Repository.Factory.GetCoreV3(source.Source));
+                .Select(source => Repository.Factory.GetCoreV3(source));
 
             foreach (var r in repositories) {
                 logger?.LogVerbose($"using repo: {r}");
@@ -367,25 +367,33 @@ namespace NuGet.PowerShell
 
                 var di = await GetPackageDependencyInfo(pi, framework, repositories, cache, logger);
 
-                if (dependencies.Add(di))
+                if (di != null)
                 {
-                    logger.LogVerbose($"Adding {pi.Id} {pi.Version}");
-                    if (recurse)
+                    if (dependencies.Add(di))
                     {
-                        logger.LogVerbose($"Recursing into dependencies of {pi.Id} {pi.Version}");
-                        await ListAllPackageDependencies_(
-                            di,
-                            repositories,
-                            framework,
-                            dependencies,
-                            recurse,
-                            cache,
-                            logger,
-                            cancellationToken);
+                        logger.LogVerbose($"Adding {pi.Id} {pi.Version}");
+                        if (recurse)
+                        {
+                            logger.LogVerbose($"Recursing into dependencies of {pi.Id} {pi.Version}");
+                            await ListAllPackageDependencies_(
+                                di,
+                                repositories,
+                                framework,
+                                dependencies,
+                                recurse,
+                                cache,
+                                logger,
+                                cancellationToken);
+                        }
+                    }
+                    else
+                    {
+                        logger.LogVerbose($"Skipping {pi.Id} {pi.Version}, already processed");
                     }
                 } else {
-                    logger.LogVerbose($"Skipping {pi.Id} {pi.Version}, already processed");
+                    logger.LogWarning($"DependencyInfo for {pi.Id} {pi.Version} not found. Skipping!");
                 }
+
             }
         }
     }
