@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.0.2-alpha
+- fix: correct handling of feed config when using `NuGet.config` file
 - feat: improve New-NuGetPackage cmdlet
   - manifest file & command line arguments can be used together
   - hash table added as input for files mapping

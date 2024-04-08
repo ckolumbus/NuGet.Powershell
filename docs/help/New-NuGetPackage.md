@@ -79,7 +79,19 @@ Accept wildcard characters: False
 ```
 
 ### -Dependencies
-{{ Fill Dependencies Description }}
+Hashtable with information about NuGet package dependencies. Two formats are possible
+
+Short version: the value for each id is a string and interpreted as version.
+
+```powershell
+@{ "Id1"= "1.0.3";  "Id2" = "3.0"}
+```
+
+Complete version: the value for each package id is a hashtable describing "Version", "includes"
+
+```powershell
+@{ "Id1"= @{Version=1.0.3; Includes="PrivateAssets,Build"; Excludes="Analyzers"} }
+```
 
 ```yaml
 Type: Hashtable
