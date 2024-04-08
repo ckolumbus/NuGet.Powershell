@@ -17,6 +17,7 @@
 
 using System;
 using System.Management.Automation;
+using System.Threading;
 using System.Threading.Tasks;
 using NuGet.Common;
 
@@ -67,20 +68,20 @@ namespace NuGet.PowerShell
             return Task.CompletedTask;
         }
 
+#if ENABLE_PSLOGGERCMDLET
         /* TODO: all logging disabled because when Nuget SDK methods actually use the logging faciltiy the following error happens
                  and the root cause/possible solution is not understood
                  Error: The WriteObject and WriteError methods cannot be called from outside the overrides of the
                         BeginProcessing, ProcessRecord, and EndProcessing methods
         */
-        /*
-        public void LogDebug(string data) => WriteDebug(data);
-        public void LogError(string data) => WriteError(new ErrorRecord(new Exception(data), "PSLoggerCmdlet", ErrorCategory.NotSpecified , this));
-        public void LogInformation(string data) => WriteInformation(new InformationRecord(data, ""));
-        public void LogInformationSummary(string data) => WriteInformation(new InformationRecord(data, ""));
-        public void LogMinimal(string data) => WriteVerbose(data);
-        public void LogVerbose(string data) => WriteVerbose(data);
-        public void LogWarning(string data) => WriteVerbose(data);
-        */
+        public void LogDebug(string data) => WriteDebugSynchronized(data);
+        public void LogError(string data) => WriteErrorSynchronized(new ErrorRecord(new Exception(data), "PSLoggerCmdlet", ErrorCategory.NotSpecified , this));
+        public void LogInformation(string data) => WriteInformationSynchronized(new InformationRecord(data, ""));
+        public void LogInformationSummary(string data) => WriteInformationSynchronized(new InformationRecord(data, ""));
+        public void LogMinimal(string data) => WriteVerboseSynchronized(data);
+        public void LogVerbose(string data) => WriteVerboseSynchronized(data);
+        public void LogWarning(string data) => WriteVerboseSynchronized(data);
+#else
         public void LogDebug(string data) { }
         public void LogError(string data) { }
         public void LogInformation(string data) { }
@@ -88,5 +89,38 @@ namespace NuGet.PowerShell
         public void LogMinimal(string data) { }
         public void LogVerbose(string data) { }
         public void LogWarning(string data) { }
+#endif
+
+        // try to fix logging from async cmdlet based on
+        // https://github.com/PowerShell/PowerShell/issues/7690#issuecomment-612692311
+
+        private void WriteDebugSynchronized(string data)
+        {
+            ThreadAffinitiveSynchronizationContext.Current.Post(new SendOrPostCallback((o) =>
+            {
+                base.WriteDebug(data);
+            }), null);
+        }
+        private void WriteInformationSynchronized(InformationRecord data)
+        {
+            ThreadAffinitiveSynchronizationContext.Current.Post(new SendOrPostCallback((o) =>
+            {
+                base.WriteInformation(data, new string[] { });
+            }), null);
+        }
+        private void WriteErrorSynchronized(ErrorRecord data)
+        {
+            ThreadAffinitiveSynchronizationContext.Current.Post(new SendOrPostCallback((o) =>
+            {
+                base.WriteError(data);
+            }), null);
+        }
+        private void WriteVerboseSynchronized(string data)
+        {
+            ThreadAffinitiveSynchronizationContext.Current.Post(new SendOrPostCallback((o) =>
+            {
+                base.WriteVerbose(data);
+            }), null);
+        }
     }
 }

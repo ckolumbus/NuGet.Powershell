@@ -83,7 +83,7 @@ task build restore, version, {
     # create dist folder
     New-Item $moduleDir -ItemType Directory -Force | Out-Null
 
-    exec { dotnet publish --configuration $Configuration --output $moduleDir ./src }
+    exec { dotnet publish /p:DefineConstants="ENABLE_PSLOGGERCMDLET" --configuration $Configuration --output $moduleDir ./src }
 
     $preReleaseSnippet = ""
     if ($script:PreRelease ) {
