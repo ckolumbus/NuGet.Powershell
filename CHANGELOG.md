@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.0.2-alpha
+## 0.0.2
+- fix: downgrade NuGet client SDK to 6.6.1 to avoid assembly binding problem on
+  powershel 5.1 to System.Buffers 4.0.2.0
 - fix: correct handling of feed config when using `NuGet.config` file
 - feat: improve New-NuGetPackage cmdlet
   - manifest file & command line arguments can be used together

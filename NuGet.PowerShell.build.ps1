@@ -30,7 +30,8 @@ param(
     [string] $ApiKey = $env:APIKEY,
     [ValidateSet("Release", "Debug")]
     [string] $Configuration = "Release",
-    [string] $BuildOutputDir
+    [string] $BuildOutputDir,
+    [switch] $EnableAsyncLoggerExperimental
 )
 
 $ModuleName = "NuGet.Powershell"
@@ -83,7 +84,11 @@ task build restore, version, {
     # create dist folder
     New-Item $moduleDir -ItemType Directory -Force | Out-Null
 
-    exec { dotnet publish /p:DefineConstants="ENABLE_PSLOGGERCMDLET" --configuration $Configuration --output $moduleDir ./src }
+    $publishArgs = @()
+    if ($EnableAsyncLoggerExperimental) {
+        $publishArgs.Add('/p:DefineConstants="ENABLE_PSLOGGERCMDLET"')
+    }
+    exec { dotnet publish @$publishArgs --configuration $Configuration --output $moduleDir ./src }
 
     $preReleaseSnippet = ""
     if ($script:PreRelease ) {
