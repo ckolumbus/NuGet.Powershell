@@ -86,9 +86,9 @@ task build restore, version, {
 
     $publishArgs = @()
     if ($EnableAsyncLoggerExperimental) {
-        $publishArgs.Add('/p:DefineConstants="ENABLE_PSLOGGERCMDLET"')
+        $publishArgs += '/p:DefineConstants="ENABLE_PSLOGGERCMDLET"'
     }
-    exec { dotnet publish @$publishArgs --configuration $Configuration --output $moduleDir ./src }
+    exec { dotnet publish @publishArgs --configuration $Configuration --output $moduleDir ./src }
 
     $preReleaseSnippet = ""
     if ($script:PreRelease ) {
