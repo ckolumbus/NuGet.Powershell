@@ -30,7 +30,8 @@ The command line parammters allow to set/extend the following nuspec elements
 * metadata/id (overwrite)
 * metadata/version (overwrite)
 * metadata/description (overwrite)
-* metdata/authors (add)
+* metadata/authors (add)
+* metadata/repository (overwrite)
 * dependencies (add)
 * files (add)
 
@@ -200,6 +201,29 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -RepositoryInfo
+Hashtable containing information about the repository and associated metadata.
+
+Allowed keys: Type, Url, Branch, Commit
+
+All elements are optional, only one need to be provided.
+
+Example Hash:
+
+@{ Type = "git"; Url = "http://github.com/ckolumbus/NuGet.Powershell"; Branch = "dev";Commit = "3dc4ae2" }
+
+```yaml
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 

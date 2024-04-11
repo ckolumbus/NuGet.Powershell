@@ -47,13 +47,13 @@ namespace NuGet.PowerShell
         [Parameter(Position = 4)]
         public string ContentPath { get; set; }
 
-        [Parameter()]
+        [Parameter]
         public Hashtable Dependencies { get; set; }
 
-        [Parameter()]
+        [Parameter]
         public Hashtable FilesMapping { get; set; }
 
-        [Parameter()]
+        [Parameter]
         public string ManifestFile { get; set; } = "";
 
         [Parameter]
@@ -64,6 +64,9 @@ namespace NuGet.PowerShell
 
         [Parameter]
         public string OutputFilename { get; set; }
+
+        [Parameter]
+        public Hashtable RepositoryInfo { get; set; }
 
 
 
@@ -116,6 +119,29 @@ namespace NuGet.PowerShell
                 }
 
                 builder.AddFiles(fullContentPath, "**", "");
+            }
+
+            // add Repository meta data
+            if (RepositoryInfo != null)
+            {
+                string[] repoInfoElements= { "Type", "Url", "Branch", "Commit" };
+                string allowedElements = string.Join(",", repoInfoElements);
+
+                if (RepositoryInfo.Count == 0){
+                    throw new ArgumentException($"Repository Metadata empty! Please provide at least one of '{allowedElements}'");
+                }
+
+                WriteVerbose($"Setting Repository Metadata");
+                var repoData = new RepositoryMetadata();
+                foreach (string key in RepositoryInfo.Keys) {
+                    if (repoInfoElements.Contains(key)) {
+                        var property = repoData.GetType().GetProperty(key);
+                        property.SetValue(repoData,RepositoryInfo[key].ToString());
+                    } else {
+                        throw new ArgumentException($"Repository Metadata Key unknown: {key}, allowed values '{allowedElements}'");
+                    }
+                }
+                builder.Repository = repoData;
             }
 
             // add file mapping
