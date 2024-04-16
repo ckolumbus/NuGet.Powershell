@@ -8,11 +8,11 @@ Locale: {{ Update Locale }}
 
 # NuGet.Powershell Module
 ## Description
-{{ Fill in the Description }}
+This Powershell module provides a platform independent NuGet client as cmdlets based on the NuGet Client SDK. The project was started because the only platform independent solution was to either use the dotnet toolchain, which is focused on C# development, or nuget.exe, which is requires full-fledeged Mono installation to run (and has very limited functionality). The NuGet package format itself has applications far beyond the C# ecosystem and this module provides the functionality to leverage the NuGet ecosystem everywhere, where powershell core exists.
 
 ## NuGet.Powershell Cmdlets
 ### [Find-NuGetPackage](Find-NuGetPackage.md)
-{{ Fill in the Synopsis }}
+Search for NuGet packages within the configured repositories.
 
 ### [Get-NuGetPackageDependencyInfo](Get-NuGetPackageDependencyInfo.md)
 Get the dependencies for package identified by an Id and a NuGet VersionRange. It can provide
@@ -53,4 +53,7 @@ packages if the resolution attempt is successful.
 
 ### [Resolve-NuGetPackageVersion](Resolve-NuGetPackageVersion.md)
 Resolve a NuGet version range or floating version specification to a concrete version number.
+
+### [Save-NuGetPackage](Save-NuGetPackage.md)
+Download and save a NuGet Package.
 
