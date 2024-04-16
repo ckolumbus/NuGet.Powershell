@@ -117,7 +117,11 @@ $preReleaseSnippet
 "@
 }
 
-task updatehelp build, {
+task updatehelpmarkdown {
+    if ($PSVersion -ne '5') {
+        throw "UpdateHelpMarkdown must be run from Powershell 5 to avoid wrong handling of common `-ProgressAction` parsmeter."
+    }
+}, build, {
     Import-Module $moduleDir -Force
 
     $parameters = @{
@@ -129,15 +133,17 @@ task updatehelp build, {
         Encoding = [System.Text.Encoding]::UTF8
     }
     Update-MarkdownHelpModule @parameters
+    # Run twice to update index file in case of newly added cmdlets
+    Update-MarkdownHelpModule @parameters
 
     Remove-Module $ModuleName -Force
 }
 
-task createhelp {
+task createhelpxml {
     New-ExternalHelp $helpInputDir -OutputPath $helpOutputDir
 }
 
-task module clean, build, createhelp, version
+task module clean, build, createhelpxml, version
 
 task zip module, {
     Compress-Archive -DestinationPath (Join-Path $distDir "$ModuleName.${script:FullVersion}.zip") -Path $moduleDir
