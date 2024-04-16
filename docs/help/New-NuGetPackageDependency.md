@@ -17,6 +17,8 @@ New-NuGetPackageDependency [-Id] <String> [-VersionRange] <String> [[-Include] <
  [[-Exclude] <String[]>] [<CommonParameters>]
 ```
 
+## DESCRIPTION
+
 ## EXAMPLES
 
 ### Example 1

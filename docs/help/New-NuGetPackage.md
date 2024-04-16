@@ -15,7 +15,8 @@ Create a new NuGet package from use a nuspec file, command line paramters or bot
 ```
 New-NuGetPackage [[-Id] <String>] [[-Version] <String>] [[-Authors] <String[]>] [[-Description] <String>]
  [-ContentPath <String>] [[-Dependencies] <Hashtable>] [-FilesMapping <Hashtable>] [[-ManifestFile] <String>]
- [-Framework <String>] [-OutputPath <String>] [-OutputFilename <String>] [<CommonParameters>]
+ [-Framework <String>] [-OutputPath <String>] [-OutputFilename <String>] [-RepositoryInfo <Hashtable>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,15 +85,15 @@ Hashtable with information about NuGet package dependencies. Two formats are pos
 
 Short version: the value for each id is a string and interpreted as version.
 
-```powershell
+
+
 @{ "Id1"= "1.0.3";  "Id2" = "3.0"}
-```
 
 Complete version: the value for each package id is a hashtable describing "Version", "includes"
 
-```powershell
+
+
 @{ "Id1"= @{Version=1.0.3; Includes="PrivateAssets,Build"; Excludes="Analyzers"} }
-```
 
 ```yaml
 Type: Hashtable

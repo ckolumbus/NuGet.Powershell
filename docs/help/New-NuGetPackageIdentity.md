@@ -16,6 +16,8 @@ Creates a NuGet `PackageIdentity` object from the provided paramters.
 New-NuGetPackageIdentity [-Id] <String> [-Version] <String> [<CommonParameters>]
 ```
 
+## DESCRIPTION
+
 ## EXAMPLES
 
 ### Example 1

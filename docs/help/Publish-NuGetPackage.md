@@ -23,6 +23,8 @@ Publish-NuGetPackage [-Path] <String[]> [-Source] <String> [[-SourceCredential] 
  [<CommonParameters>]
 ```
 
+## DESCRIPTION
+
 ## EXAMPLES
 
 ### Example 1
