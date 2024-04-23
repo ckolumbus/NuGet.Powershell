@@ -184,7 +184,7 @@ namespace NuGet.PowerShell
             if (Dependencies != null)
             {
                 WriteVerbose("Adding Dependency information");
-                ISet<PackageDependency> packageDependencies = new HashSet<PackageDependency>();
+                Dictionary<string, ISet<PackageDependency>> packageDependencyGroups = new Dictionary<string, ISet<PackageDependency>>();
 
                 foreach (var dep in Dependencies.Keys)
                 {
@@ -198,6 +198,7 @@ namespace NuGet.PowerShell
                         depParameters = new Hashtable
                         {
                             { "Version", Dependencies[dep] as string },
+                            { "Framework", "" },
                             { "Includes", null },
                             { "Excludes", null }
                         };
@@ -212,8 +213,7 @@ namespace NuGet.PowerShell
                         version = VersionRange.Parse(versionString);
                     }
 
-                    // TODO: is dependency specific framework modeling needed?
-                    //string framework = depParameters["Framework"] as string ?? "";
+                    string framework = depParameters["Framework"] as string ?? "";
 
                     string[] includes;
                     string includesString = depParameters["Includes"] as string;
@@ -243,9 +243,15 @@ namespace NuGet.PowerShell
                         String.Join(",", excludes)
                     ));
                     var pd = new PackageDependency(dependencyName, version, includes, excludes);
-                    packageDependencies.Add(pd);
+                    if (!packageDependencyGroups.ContainsKey(framework)) {
+                        ISet<PackageDependency> packageDependencies = new HashSet<PackageDependency>();
+                        packageDependencyGroups.Add(framework, packageDependencies);
+                    }
+                    packageDependencyGroups[framework].Add(pd);
                 }
-                builder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.Parse(Framework), packageDependencies));
+                foreach (var framework in packageDependencyGroups.Keys) {
+                    builder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.Parse(framework), packageDependencyGroups[framework]));
+                }
             }
 
             if (null == OutputFilename) {
