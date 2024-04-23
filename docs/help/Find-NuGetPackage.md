@@ -61,7 +61,13 @@ here `https://learn.microsoft.com/en-us/nuget/consume-packages/finding-and-choos
   * `id:jquery id:ui` searches for multiple terms in the id property.
   * `id:jquery tags:validation` searches for multiple properties.
 
-  Search ignores unsupported properties, so invalid:jquery ui is the same as searching for ui, and invalid:jquery returns all packages.
+Search ignores unsupported properties, so invalid:jquery ui is the same as searching for ui, and invalid:jquery returns all packages.
+
+Feed Configuration can be done in three ways:
+
+1. If neither `-ConfigFile` nor `-Source` paramter is provided, the standard nuget configuration search scheme is used (local & global `Nuget.Config`)
+2. A dedicated Nuget. Config file can be provide via the `-ConfigFile` parameter
+3. When `-Source` paramter is provided, all feed configuration parameters are directly provided on the command line, no config file needed.
 
 ## EXAMPLES
 
@@ -82,7 +88,7 @@ Find package where the package Id matches exactly `Newtonsoft.Json`
 ## PARAMETERS
 
 ### -ConfigFile
-{{ Fill ConfigFile Description }}
+Path to a `Nuget.Config` file that is to be used.
 
 ```yaml
 Type: String
@@ -109,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -IncludePrerelease
-{{ Fill IncludePrerelease Description }}
+Include pre-release version tinto search
 
 ```yaml
 Type: SwitchParameter
@@ -124,7 +130,7 @@ Accept wildcard characters: False
 ```
 
 ### -MaxResult
-{{ Fill MaxResult Description }}
+Limit result to the provided number, default=100
 
 ```yaml
 Type: Int32
@@ -133,13 +139,13 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: 100
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
 ### -SearchString
-{{ Fill SearchString Description }}
+The search string accoring to the specification (se DESCRIPTION)
 
 ```yaml
 Type: String[]
@@ -154,7 +160,7 @@ Accept wildcard characters: False
 ```
 
 ### -Source
-{{ Fill Source Description }}
+url/path to the package source to use
 
 ```yaml
 Type: String
@@ -169,7 +175,7 @@ Accept wildcard characters: False
 ```
 
 ### -SourceCredential
-{{ Fill SourceCredential Description }}
+PSCredential object to be used for authenticated feeds if `-Source` is used.
 
 ```yaml
 Type: PSCredential
@@ -184,7 +190,7 @@ Accept wildcard characters: False
 ```
 
 ### -SourceProtocolVersion
-{{ Fill SourceProtocolVersion Description }}
+Nuget Protocol version to be used with `-Source` feed, allowes `2` or `3`
 
 ```yaml
 Type: Int32
