@@ -54,6 +54,7 @@ namespace NuGet.PowerShell
 
 
         private string cwd;
+        private string rootedSource;
 
         protected override Task BeginProcessingAsync()
         {
@@ -64,6 +65,8 @@ namespace NuGet.PowerShell
                 string pwd = SourceCredential.GetNetworkCredential().Password;
                 ApiKey = $"{usr}:{pwd}";
             }
+
+            rootedSource = Helpers.GetRootedPath(Source, cwd);
 
             return Task.CompletedTask;
         }
@@ -82,8 +85,8 @@ namespace NuGet.PowerShell
                     // Push api below could hanlde array of package. Maybe that's faster, but
                     // how to do individual error handling?
 
-                    WriteVerbose($"Publishing : {fullPackagePath} to {Source}");
-                    await PublishNugetPackageAsync(fullPackagePath, Source, ApiKey);
+                    WriteVerbose($"Publishing : {fullPackagePath} to {rootedSource}");
+                    await PublishNugetPackageAsync(fullPackagePath, rootedSource, ApiKey);
                 }
                 catch (Exception e)
                 {
