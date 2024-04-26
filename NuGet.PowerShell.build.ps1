@@ -156,10 +156,10 @@ task checkPublishPrerequisites {
 
 # Synopsis: Push with a version tag.
 task pushRelease checkPublishPrerequisites, version, {
-
+    $gitVersionTag = "v$script:FullVersion"
     exec { git push }
-    exec { git tag -a "v$script:FullVersion" -m "v$script:FullVersion" }
-    exec { git push origin "$script:FullVersion" }
+    exec { git tag $gitVersionTag }
+    exec { git push origin $gitVersionTag}
 }
 
 task publish-only {
