@@ -51,6 +51,9 @@ namespace NuGet.PowerShell
         public Hashtable Dependencies { get; set; }
 
         [Parameter]
+        public Hashtable FrameworkAssemblies { get; set; }
+
+        [Parameter]
         public Hashtable FilesMapping { get; set; }
 
         [Parameter]
@@ -181,8 +184,7 @@ namespace NuGet.PowerShell
             }
 
             // add dependency list
-            if (Dependencies != null)
-            {
+            if (Dependencies != null) {
                 WriteVerbose("Adding Dependency information");
                 Dictionary<string, ISet<PackageDependency>> packageDependencyGroups = new Dictionary<string, ISet<PackageDependency>>();
 
@@ -251,6 +253,32 @@ namespace NuGet.PowerShell
                 }
                 foreach (var framework in packageDependencyGroups.Keys) {
                     builder.DependencyGroups.Add(new PackageDependencyGroup(NuGetFramework.Parse(framework), packageDependencyGroups[framework]));
+                }
+            }
+
+            // Framework Assembly References
+            if (FrameworkAssemblies != null)
+            {
+                WriteVerbose("Adding Framework Assembly Reference information");
+                Dictionary<string, ISet<FrameworkAssemblyReference>> frameworkAssemblyReferenceGroups = new Dictionary<string, ISet<FrameworkAssemblyReference>>();
+
+                foreach (var assembly in FrameworkAssemblies.Keys)
+                {
+                    string assemblyName = (string)assembly;
+                    var assemblyTargetFramework = NuGetFramework.ParseFolder((string)FrameworkAssemblies[assembly]);
+
+
+                    WriteVerbose(String.Format(
+                            "Adding Framework Assembly Reference from Arguments to Manifest: name={0} targetFramework={1}",
+                            assemblyName, assemblyTargetFramework
+                        )
+                    );
+
+                    var far = ((string)FrameworkAssemblies[assembly] == "") ?
+                            new FrameworkAssemblyReference(assemblyName, new List<NuGetFramework>() { }) :
+                            new FrameworkAssemblyReference(assemblyName, new List<NuGetFramework>() { assemblyTargetFramework });
+
+                    builder.FrameworkReferences.Add(far);
                 }
             }
 
