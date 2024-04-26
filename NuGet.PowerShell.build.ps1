@@ -62,9 +62,9 @@ task clean {
 
 # Synopsis: Set $script:Version from Release-Notes.
 task version {
-    $matches =  switch -Regex -File CHANGELOG.md {'##\s+(\d+\.\d+\.\d+)(-(\S+))?' {$Matches; break}}
-    $script:FullVersion = $script:Version = $matches[1]
-    $script:PreRelease = $matches[3]
+    $versionMatches =  switch -Regex -File CHANGELOG.md {'##\s+(\d+\.\d+\.\d+)(-(\S+))?' {$Matches; break}}
+    $script:FullVersion = $script:Version = $versionMatches[1]
+    $script:PreRelease = $versionMatches[3]
     if ($script:PreRelease) {
         if ($script:PreRelease -eq $devPrereleaseTag) {
             # Powershell only support Semver 1.0.0 pre-release tags!
@@ -176,6 +176,36 @@ task publish checkPublishPrerequisites,  {
     }
 }, module, test, publish-only, pushRelease
 
-task test {
-    Write-Warning "Tests not yet implemented"
+
+function getPesterConfig {
+    # Gather test results. Store them in a variable and file
+    $pesterConfig = New-PesterConfiguration
+    $pesterConfig.Run.Path = "$BuildRoot\test"
+    $pesterConfig.Run.PassThru = $true
+    $pesterConfig.Output.Verbosity = "Detailed"
+    $pesterConfig.TestResult.Enabled = $true
+    $pesterConfig.TestResult.OutputFormat = "NUnitXml"
+    $pesterConfig.TestResult.OutputPath = "$BuildRoot\$TestFile"
+
+    if (-Not $IsWindows) {
+        $pesterConfig.Run.ExcludeTag = "WindowsOnly"
+    }
+
+    return $pesterConfig
 }
+task test-only {
+    $pesterConfig = getPesterConfig
+    $pesterConfig.Filter.ExcludeTag = @("disabled" )
+
+    $TestResults = Invoke-Pester -Configuration $pesterConfig
+
+    Remove-Item "$BuildRoot\$TestFile" -Force -ErrorAction SilentlyContinue
+
+    # Failed tests?
+    if($TestResults.FailedCount -gt 0)
+    {
+        Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+    }
+}
+
+task test module, test-only
