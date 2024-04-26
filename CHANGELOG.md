@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.0.4-alpha
+## 0.0.4
+- feat: new parameter `-FrameworkAssemblies` to add FrameworkAssemblyReferences for
+  `New-NuGetPackage`
 - fix: Publish-NuGetPackage handles local relative directory path feeds
 
 ## 0.0.3
