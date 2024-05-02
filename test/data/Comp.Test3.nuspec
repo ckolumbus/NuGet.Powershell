@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>ComponentTest3</id>
+        <version>3.0.0</version>
+        <description>xxx</description>
+        <authors>a</authors>
+        <dependencies>
+            <dependency id="Comp1" version="[1.0.0]" include="none" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="content\**" target="lib1" />
+    </files>
+</package>
