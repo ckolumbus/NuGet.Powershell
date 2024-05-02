@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.5-alpha
+- feat: `New-NuGetPackage` supports `-Properties` to replace properties in `.nuspec` files
+- fix: fix `exclude` handling for dependencies in `New-NuGetPackage`
+- test: add test-suite for `New-NuGetPackage`
+
 ## 0.0.4
 - feat: new parameter `-FrameworkAssemblies` to add FrameworkAssemblyReferences for
   `New-NuGetPackage`
