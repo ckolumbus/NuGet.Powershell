@@ -60,9 +60,6 @@ namespace NuGet.PowerShell
         public string ManifestFile { get; set; } = "";
 
         [Parameter]
-        public string Framework { get; set; } = "";
-
-        [Parameter]
         public string OutputPath { get; set; } = ".";
 
         [Parameter]
@@ -71,13 +68,16 @@ namespace NuGet.PowerShell
         [Parameter]
         public Hashtable RepositoryInfo { get; set; }
 
+        [Parameter]
+        public Hashtable Properties { get; set; }
 
 
         protected override void ProcessRecord()
         {
             string cwd = SessionState.Path.CurrentFileSystemLocation.Path;
-            PackageBuilder builder;
 
+            Manifest manifest = null;
+            string manifestBaseDir = null;
             // load manifest file first, if provided
             if (!String.IsNullOrEmpty(ManifestFile))
             {
@@ -87,30 +87,38 @@ namespace NuGet.PowerShell
                 }
                 var fullManifestFilePath = System.IO.Path.GetFullPath(fullManifestFile);
                 WriteVerbose($"Loading Nuspec file : {fullManifestFilePath}");
-                var dir = System.IO.Path.GetDirectoryName(fullManifestFilePath);
-                var file = System.IO.Path.GetFileName(fullManifestFilePath);
+                manifestBaseDir = System.IO.Path.GetDirectoryName(fullManifestFilePath);
 
-                builder = new PackageBuilder(fullManifestFilePath, dir, null, false, false);
-            } else {
-                builder = new PackageBuilder();
+                using (Stream stream = File.OpenRead(fullManifestFilePath))
+                {
+                    manifest = (Properties == null) ?
+                            Manifest.ReadFrom(stream, validateSchema: true) :
+                            Manifest.ReadFrom(stream, p => (string)Properties[p], validateSchema: true);
+                }
             }
 
-            // overwrite / add metadatat provided via command line
-            WriteVerbose("Setting Metadata from cmdline arguments");
-            var manifestMetadata = new ManifestMetadata
-            {
-                Id = Id ?? builder.Id,
-                Version = !String.IsNullOrEmpty(Version) ? NuGetVersion.Parse(Version) : builder.Version,
-                Description = Description ?? builder.Description,
-                Authors = Authors != null ? Authors.AsEnumerable() : builder.Authors
-            };
-            builder.Populate(manifestMetadata);
+            PackageBuilder builder = new PackageBuilder();
 
-            WriteVerbose("Effective Metadata:");
-            WriteVerbose("     Id=" + builder.Id);
-            WriteVerbose("     Version=" + builder.Version);
-            WriteVerbose("     Authors=" + String.Join(",", builder.Authors));
-            WriteVerbose("     Description=" + builder.Description);
+            // overwrite / add metadata provided via command line
+            WriteVerbose("Setting Metadata from cmdline arguments (when provided)");
+            var metadata = (manifest != null) ? manifest.Metadata : new ManifestMetadata();
+
+            metadata.Id = Id ?? metadata.Id;
+            metadata.Version = !String.IsNullOrEmpty(Version) ? NuGetVersion.Parse(Version) : metadata.Version;
+            metadata.Description = Description ?? metadata.Description;
+            metadata.Authors = Authors != null ? Authors.AsEnumerable() : metadata.Authors;
+
+            WriteVerbose("Effective Metadata (nuspec + cmdline):");
+            WriteVerbose("     Id=" + metadata.Id);
+            WriteVerbose("     Version=" + metadata.Version);
+            WriteVerbose("     Authors=" + String.Join(",", metadata.Authors));
+            WriteVerbose("     Description=" + metadata.Description);
+
+            // populate builder with metadata and files from manifest
+            builder.Populate(metadata);
+            if (manifest != null && manifest.HasFilesNode) {
+                builder.PopulateFiles(manifestBaseDir,manifest.Files);
+            }
 
             // add dedicated ContentPath to files list
             if (!String.IsNullOrEmpty(ContentPath))
@@ -121,7 +129,7 @@ namespace NuGet.PowerShell
                     fullContentPath = System.IO.Path.Combine(cwd, ContentPath);
                 }
 
-                builder.AddFiles(fullContentPath, "**", "");
+                builder.AddFiles(fullContentPath, @"**\*", "");
             }
 
             // add Repository meta data
@@ -232,7 +240,7 @@ namespace NuGet.PowerShell
                     string excludesString = depParameters["Excludes"] as string;
                     if (!(excludesString is null))
                     {
-                        excludes = includesString.Split(',').Select(s => s.Trim()).ToArray();
+                        excludes = excludesString.Split(',').Select(s => s.Trim()).ToArray();
                     }
                     else
                     {
@@ -297,11 +305,18 @@ namespace NuGet.PowerShell
                 throw new Exception($"File Exists: {fullOutputFilePath}");
             }
 
-            using (FileStream nupkgFileStream = new FileStream(fullOutputFilePath, FileMode.Create) ) {
-                builder.Save(nupkgFileStream);
-            };
-
-            WriteObject(fullOutputFilePath);
+            try
+            {
+                using (FileStream nupkgFileStream = new FileStream(fullOutputFilePath, FileMode.Create))
+                {
+                    builder.Save(nupkgFileStream);
+                };
+                WriteObject(fullOutputFilePath);
+            } catch {
+                // clean up in case of exception, don't leave incorrect nupkg file
+                File.Delete(fullOutputFilePath);
+                throw;
+            }
         }
     }
 }

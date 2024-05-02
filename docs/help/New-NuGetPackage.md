@@ -14,9 +14,9 @@ Create a new NuGet package from use a nuspec file, command line paramters or bot
 
 ```
 New-NuGetPackage [[-Id] <String>] [[-Version] <String>] [[-Authors] <String[]>] [[-Description] <String>]
- [-ContentPath <String>] [[-Dependencies] <Hashtable>] [-FilesMapping <Hashtable>] [[-ManifestFile] <String>]
- [-Framework <String>] [-OutputPath <String>] [-OutputFilename <String>] [-RepositoryInfo <Hashtable>]
- [<CommonParameters>]
+ [-ContentPath <String>] [[-Dependencies] <Hashtable>] [-FrameworkAssemblies <Hashtable>]
+ [-FilesMapping <Hashtable>] [[-ManifestFile] <String>] [-OutputPath <String>] [-OutputFilename <String>]
+ [-RepositoryInfo <Hashtable>] [-Properties <Hashtable>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -137,11 +137,11 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Framework
-{{ Fill Framework Description }}
+### -FrameworkAssemblies
+{{ Fill FrameworkAssemblies Description }}
 
 ```yaml
-Type: String
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
@@ -202,6 +202,21 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Properties
+{{ Fill Properties Description }}
+
+```yaml
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
