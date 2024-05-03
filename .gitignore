@@ -2,5 +2,5 @@ obj
 bin
 /.env
 /dist/
-/build
-/test/packages
+/deps/
+/TestResults_*.xml

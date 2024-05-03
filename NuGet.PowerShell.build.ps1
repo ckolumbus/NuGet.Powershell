@@ -19,6 +19,22 @@
 .Synopsis
     Build script NuGet.PowerShell binary module
 
+.EXAMPLE
+
+    ```pwsh
+    ./NuGet.PowerShell.build.ps1 ?
+    ````
+
+    List all possible build targets
+
+.EXAMPLE
+
+    ```pwsh
+    ./NuGet.PowerShell.build.ps1 test
+    ````
+
+    Setup workspace with needed external modules and call `test` target
+
 .Notes
     Build script is based on `InvokeBuild` Powershell module
 
@@ -26,6 +42,7 @@
 
 # Build script parameters
 param(
+    [Parameter(Position = 0)] $Tasks,
     [string] $Repsitory = $env:POWERSHELL_REPO_ID,
     [string] $ApiKey = $env:APIKEY,
     [ValidateSet("Release", "Debug")]
@@ -33,6 +50,25 @@ param(
     [string] $BuildOutputDir,
     [switch] $EnableAsyncLoggerExperimental
 )
+
+##########################################################################################
+# Hook to enable direct calling of the build script
+# 1. sets up environment with needed modules (see ./build/Setup-Workspace.ps1)
+# 2. calls Invoke-Build with provided paramaters to execute actual build
+##########################################################################################
+if ([System.IO.Path]::GetFileName($MyInvocation.ScriptName) -ne 'Invoke-Build.ps1') {
+    # setup and load external modules
+    . $PSScriptRoot/build/Setup-Workspace.ps1
+    try {
+        Invoke-Build -Task $Tasks -File $MyInvocation.MyCommand.Path @PSBoundParameters
+        exit 0
+    }
+    catch {
+        exit -1
+    }
+}
+##########################################################################################
+
 
 $ModuleName = "NuGet.Powershell"
 if ([string]::IsNullOrEmpty($BuildOutputDir)) {
@@ -46,9 +82,12 @@ $helpInputDir = join-Path $BuildRoot "docs/help"
 $helpOutputDir = join-Path $moduleDir "en-US"
 $devPrereleaseTag = "alpha"
 
+$srcDir = Resolve-Path "./src"
 $Timestamp = Get-date -uformat "%Y%m%d-%H%M%S"
 $PSVersion = $PSVersionTable.PSVersion.Major
-$TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
+$TestFilePrefix = "TestResults_"
+$TestFileExt = "xml"
+$TestFile = "${TestFilePrefix}_PS${PSVersion}_$TimeStamp.${TestFileExt}"
 
 # Ensure IB works in the strict mode.
 Set-StrictMode -Version Latest
@@ -58,6 +97,8 @@ task . module
 # Synopsis: Remove temporary items.
 task clean {
     remove $moduleDir
+    remove "${TestFilePrefix}*"
+    exec { dotnet clean --configuration $Configuration $srcDir }
 }
 
 # Synopsis: Set $script:Version from Release-Notes.
@@ -75,11 +116,8 @@ task version {
     assert $script:Version
 }
 
-task restore {
-}
-
 # Synopsis: Make the module folder.
-task build restore, version, {
+task build version, {
 
     # create dist folder
     New-Item $moduleDir -ItemType Directory -Force | Out-Null
@@ -88,7 +126,7 @@ task build restore, version, {
     if ($EnableAsyncLoggerExperimental) {
         $publishArgs += '/p:DefineConstants="ENABLE_PSLOGGERCMDLET"'
     }
-    exec { dotnet publish @publishArgs --configuration $Configuration --output $moduleDir ./src }
+    exec { dotnet publish @publishArgs --configuration $Configuration --output $moduleDir $srcDir }
 
     $preReleaseSnippet = ""
     if ($script:PreRelease ) {
@@ -117,6 +155,7 @@ $preReleaseSnippet
 "@
 }
 
+# Synopsis: updates the PlatyPS markdown help files based on the cmdlet signatures
 task updatehelpmarkdown {
     if ($PSVersion -ne '5') {
         throw "UpdateHelpMarkdown must be run from Powershell 5 to avoid wrong handling of common `-ProgressAction` parsmeter."
@@ -139,22 +178,26 @@ task updatehelpmarkdown {
     Remove-Module $ModuleName -Force
 }
 
+# Synopsis: converts the markdown help files into xml file suitable for cmdline help
 task createhelpxml {
     New-ExternalHelp $helpInputDir -OutputPath $helpOutputDir
 }
 
+# Synopsis: builds the module including the extern xml help file
 task module clean, build, createhelpxml, version
 
+# Synopsis: generates the zip file which includes all modules for ct-SetupWorkspace (SetupEnv, PSDepend & NuGet.Powershell)
 task zip module, {
     Compress-Archive -DestinationPath (Join-Path $distDir "$ModuleName.${script:FullVersion}.zip") -Path $moduleDir
 }
 
+# Synopsis: Verify Repository status before publishing
 task checkPublishPrerequisites {
     $changes = exec { git status --short }
     assert (!$changes) "Please, commit changes."
 }
 
-# Synopsis: Push with a version tag.
+# Synopsis: Push Release including version tag.
 task pushRelease checkPublishPrerequisites, version, {
     $gitVersionTag = "v$script:FullVersion"
     exec { git push }
@@ -162,11 +205,12 @@ task pushRelease checkPublishPrerequisites, version, {
     exec { git push origin $gitVersionTag}
 }
 
+# Synopsis: execute publish powershell module to a repository without build or pre-publish checsk
 task publish-only {
     Publish-Module -Path $distDir/$ModuleName -Repository $Repsitory -NuGetApiKey $ApiKey
 }
 
-# Synopsis: Push PSGallery package.
+# Synopsis: Create a module release : build, test, publish module, push repo with version tag
 task publish checkPublishPrerequisites,  {
     if (-not $ApiKey) {
         throw "No ApiKey defined!"
@@ -187,19 +231,25 @@ function getPesterConfig {
     $pesterConfig.TestResult.OutputFormat = "NUnitXml"
     $pesterConfig.TestResult.OutputPath = "$BuildRoot\$TestFile"
 
-    if (-Not $IsWindows) {
-        $pesterConfig.Run.ExcludeTag = "WindowsOnly"
-    }
-
     return $pesterConfig
 }
+
+# Synopsis: trigger test execution without prior build within `powershell` shell
+task test-ps5-only {
+    powershell -c ". ./build/Setup-Workspace.ps1; Invoke-Build test-only"
+}
+
+# Synopsis: trigger test execution without prior build within `pwsh` shell
+task test-ps7-only {
+    pwsh -c ". ./build/Setup-Workspace.ps1; Invoke-Build test-only"
+}
+
+# Synopsis: Execute tests without prior build within current shell
 task test-only {
     $pesterConfig = getPesterConfig
     $pesterConfig.Filter.ExcludeTag = @("disabled" )
 
     $TestResults = Invoke-Pester -Configuration $pesterConfig
-
-    Remove-Item "$BuildRoot\$TestFile" -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     if($TestResults.FailedCount -gt 0)
@@ -208,4 +258,5 @@ task test-only {
     }
 }
 
-task test module, test-only
+# Synopsis: Execute `powershell` and `pwsh` tests after a clean module build
+task test module, test-ps5-only, test-ps7-only
