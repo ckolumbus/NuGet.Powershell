@@ -119,11 +119,15 @@ namespace NuGet.PowerShell
 
                     WriteVerbose($"Reading {fullPackageDirectory}");
 
-                    var packageReader = new PackageFolderReader(fullPackageDirectory);
-                    var nuspecStream = packageReader.GetNuspec();
-                    var xml = new XmlDocument();
-                    xml.Load(nuspecStream);
-                    WriteObject(xml);
+                    using (var packageReader = new PackageFolderReader(fullPackageDirectory))
+                    {
+                        using (var nuspecStream = packageReader.GetNuspec())
+                        {
+                            var xml = new XmlDocument();
+                            xml.Load(nuspecStream);
+                            WriteObject(xml);
+                        }
+                    }
                 }
             } else if ((null != Path) && (Path.Length > 0))
             {
@@ -131,19 +135,23 @@ namespace NuGet.PowerShell
                 {
                     var path = Helpers.GetRootedPath(pathArg, root: cwd);
                     WriteVerbose($"Getting NuSpec from : {path}");
-                    var packageReader = new PackageArchiveReader(path);
+                    using (var packageReader = new PackageArchiveReader(path))
+                    {
 
-                    if (packageReader is null)
-                    {
-                        WriteWarning($"No Package found for : {path}");
-                    }
-                    else
-                    {
-                        WriteVerbose($"Output nuspec for : {path}");
-                        var nuspecStream = await packageReader.GetNuspecAsync(cancellationToken);
-                        var xml = new XmlDocument();
-                        xml.Load(nuspecStream);
-                        WriteObject(xml);
+                        if (packageReader is null)
+                        {
+                            WriteWarning($"No Package found for : {path}");
+                        }
+                        else
+                        {
+                            WriteVerbose($"Output nuspec for : {path}");
+                            using (var nuspecStream = await packageReader.GetNuspecAsync(cancellationToken))
+                            {
+                                var xml = new XmlDocument();
+                                xml.Load(nuspecStream);
+                                WriteObject(xml);
+                            }
+                        }
                     }
                 }
             }
@@ -152,7 +160,8 @@ namespace NuGet.PowerShell
                 foreach (var identity in PackageIdentity)
                 {
                     WriteVerbose($"Searching Package for : {identity}");
-                    Stream nuspecStream = null;
+                    var xml = new XmlDocument();
+                    bool found = false;
                     foreach (var repo in repositories)
                     {
                         WriteVerbose($"      in repo : {repo}");
@@ -162,31 +171,33 @@ namespace NuGet.PowerShell
                         {
                             MemoryStream packageStream = new MemoryStream();
 
-                            await resource.CopyNupkgToStreamAsync(
-                                identity.Id,
-                                identity.Version,
-                                packageStream,
-                                cache,
-                                logger: this,
-                                cancellationToken);
+                                await resource.CopyNupkgToStreamAsync(
+                                    identity.Id,
+                                    identity.Version,
+                                    packageStream,
+                                    cache,
+                                    logger: this,
+                                    cancellationToken);
 
-                            PackageArchiveReader packageReader = new PackageArchiveReader(packageStream);
-                            nuspecStream = await packageReader.GetNuspecAsync(cancellationToken);
-                            WriteVerbose($"Found Package {identity}");
+                                using (PackageArchiveReader packageReader = new PackageArchiveReader(packageStream))
+                                {
+                                    using (Stream nuspecStream = await packageReader.GetNuspecAsync(cancellationToken)) {
+                                        xml.Load(nuspecStream);
+                                        found = true;
+                                    }
+                                }
+                                WriteVerbose($"Found Package {identity}");
                             break;
                         }
                         catch { }
                     }
-                    if (nuspecStream is null)
+                    if ( ! found)
                     {
                         WriteWarning($"No Package found for : {identity}");
                     }
                     else
                     {
-                        WriteVerbose($"Output nuspec for : {identity}");
-                        var xml = new XmlDocument();
-                        xml.Load(nuspecStream);
-                        WriteObject(xml);
+WriteVerbose($"Output nuspec for : {identity}"); WriteObject(xml);
                     }
                 }
             }
