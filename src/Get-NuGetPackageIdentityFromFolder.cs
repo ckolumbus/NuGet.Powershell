@@ -51,9 +51,11 @@ namespace NuGet.PowerShell
 
                 WriteVerbose($"Reading {fullPackagePath}");
 
-                var packageReader = new PackageFolderReader(fullPackagePath);
-                var pi = packageReader.GetIdentity();
-                WriteObject(pi);
+                using (var packageReader = new PackageFolderReader(fullPackagePath))
+                {
+                    var pi = packageReader.GetIdentity();
+                    WriteObject(pi);
+                }
             }
         }
     }
