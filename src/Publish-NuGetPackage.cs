@@ -27,7 +27,6 @@ namespace NuGet.PowerShell
 {
     [Cmdlet(VerbsData.Publish, "NuGetPackage",
         DefaultParameterSetName = "ApiKey")]
-    [OutputType(typeof(string))]
     public class PublishNugetPackageCmdlet: AsyncCmdlet
     {
         [Parameter(
