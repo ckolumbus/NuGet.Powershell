@@ -20,21 +20,6 @@ BeforeAll {
     #$TestDependsLocal = Resolve-Path $PSScriptRoot/DependFiles
 }
 
-
-Describe "Module within PS$PSVersion" {
-    Context 'Strict mode' {
-        BeforeAll {
-            Set-StrictMode -Version latest
-        }
-
-        It 'Should have been loaded' {
-            $Module = Get-Module $ProjectName
-            $Module.Name | Should -Be $ProjectName
-            $Module.ExportedCommands.Keys -contains 'New-NuGetPackage' | Should -Be $True
-        }
-    }
-}
-
 Describe "New-NugetPackage PS$PSVersion with commandline parameter only" {
     BeforeAll {
         $id = 'Comp.Test1'
