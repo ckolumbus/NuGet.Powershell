@@ -15,8 +15,10 @@
 
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,38 +32,35 @@ using NuGet.Versioning;
 namespace NuGet.PowerShell
 {
     [Cmdlet(VerbsLifecycle.Install, "NuGetPackage",
-        DefaultParameterSetName = "Object")]
-    [OutputType(typeof(PackageReaderBase))]
+        DefaultParameterSetName = "Path")]
+    [OutputType(typeof(string))]
     public class InstallNugetPackageCmdlet : AsyncCmdlet
     {
-        [Parameter( ParameterSetName = "Object", Mandatory = true, Position = 0, ValueFromPipeline = true)]
-        [Parameter( ParameterSetName = "Object-ConfigFile", Mandatory = true, Position = 0, ValueFromPipeline = true)]
-        [Parameter( ParameterSetName = "Object-ConfigArgs", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [Parameter(ParameterSetName = "Object", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [Parameter(ParameterSetName = "Object-ConfigFile", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [Parameter(ParameterSetName = "Object-ConfigArgs", Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public SourcePackageDependencyInfo[] SourcePackageDependencyInfo { get; set; }
 
-        [Parameter( ParameterSetName = "Path", Mandatory = true, Position = 0, ValueFromPipeline = true)]
-        [Parameter( ParameterSetName = "Path-ConfigFile", Mandatory = true, Position = 0, ValueFromPipeline = true)]
+        [Parameter(ParameterSetName = "Path", Mandatory = true, Position = 0, ValueFromPipeline = true)]
         public string[] Path { get; set; }
 
-        [Parameter( ParameterSetName = "Args", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true)]
         public string Id { get; set; }
 
-        [Parameter( ParameterSetName = "Args", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigArgs", Mandatory = true, Position = 1, ValueFromPipelineByPropertyName = true)]
         public string Version { get; set; }
 
-        [Parameter( ParameterSetName = "Args", Position = 2, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigFile", Position = 2, ValueFromPipelineByPropertyName = true)]
-        [Parameter( ParameterSetName = "Args-ConfigArgs", Position = 2, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args", Position = 2, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigFile", Position = 2, ValueFromPipelineByPropertyName = true)]
+        [Parameter(ParameterSetName = "Args-ConfigArgs", Position = 2, ValueFromPipelineByPropertyName = true)]
         public string Framework { get; set; } = "any";
 
-        [Parameter(ParameterSetName = "Args")]
-        [Parameter(ParameterSetName = "Args-ConfigFile")]
-        [Parameter(ParameterSetName = "Args-ConfigArgs")]
-        public string Name { get; set; } = "";
+        [Parameter]
+        public string[] Name { get; set; }
 
         [Parameter]
         public string OutputPath { get; set; } = ".";
@@ -73,7 +72,6 @@ namespace NuGet.PowerShell
         public SwitchParameter UseSideBySidePaths { get; set; } = false;
 
         [Parameter(ParameterSetName = "Object-ConfigFile", Mandatory = true)]
-        [Parameter(ParameterSetName = "Path-ConfigFile", Mandatory = true)]
         [Parameter(ParameterSetName = "Args-ConfigFile", Mandatory = true)]
         public string ConfigFile { get; set; } = "";
 
@@ -99,6 +97,10 @@ namespace NuGet.PowerShell
 
         protected override Task BeginProcessingAsync()
         {
+            if (Name != null && UseSideBySidePaths) {
+                throw new ArgumentException("'Name' paramter cannot be used together with 'UseSideBySidePaths'");
+            }
+
             nuGetFramework = NuGetFramework.ParseFolder(Framework);
 
             // needed for "GlobalPackagesFolder"
@@ -131,6 +133,12 @@ namespace NuGet.PowerShell
                 SourcePackageDependencyInfo = new[] { packageToInstall };
             }
 
+            if (MyInvocation.ExpectingInput) { // we are called with pipeline input
+                if (Name != null) {
+                   throw new InvalidOperationException("'Name' paramter cannot be used with pipeline input");
+                }
+            }
+
             var packagePathResolver = new MappingPackagePathResolver(OutputPath, useSideBySidePaths: UseSideBySidePaths);
             var packageExtractionContext = new PackageExtractionContext(
             PackageSaveMode.Nuspec | PackageSaveMode.Files,
@@ -140,68 +148,95 @@ namespace NuGet.PowerShell
 
             if ((null != Path) && (Path.Length > 0))
             {
-                foreach (var pathArg in Path) {
+                foreach (var pathIndex in Enumerable.Range(0, Path.Length))
+                {
+                    WriteVerbose($"Processing Path index : {pathIndex}");
+                    var pathArg = Path[pathIndex];
                     var path = Helpers.GetRootedPath(pathArg, root: cwd);
                     WriteVerbose($"Installing from Path : {path}");
 
-                    PackageReaderBase packageReader;
-                    var packageReaderPkg = new PackageArchiveReader(path);
-
-                    var installedPath = packagePathResolver.GetInstallPath(packageReaderPkg.GetIdentity());
-
-                    if (!Directory.Exists(installedPath) || Force)
+                    using (var packageReaderPkg = new PackageArchiveReader(path))
                     {
-                        await PackageExtractor.ExtractPackageAsync(
-                            path,
-                            packageReaderPkg,
-                            packagePathResolver,
-                            packageExtractionContext,
-                            CancellationToken.None);
+                        var packageIdentity = packageReaderPkg.GetIdentity();
+                        if (Name != null)
+                        {
+                            var id = packageIdentity.Id;
+                            if (pathIndex < Name.Count()){
+                                var mappedName = Name[pathIndex];
+                                WriteVerbose($"adding output path name mapping : {id} -> {mappedName}");
+                                packagePathResolver.AddPackageIdNameMapping(id, mappedName);
+                            } else {
+                                WriteVerbose($"no path name mapping provided for : {id}");
+                            }
+                        }
 
-                        packageReader = packageReaderPkg;
-                    } else {
-                        packageReader = new PackageFolderReader(installedPath);
+                        var installedPath = packagePathResolver.GetInstallPath(packageIdentity);
+
+                        if (Directory.Exists(installedPath) && Force) {
+                            Directory.Delete(installedPath, true);
+                        }
+
+                        if (!Directory.Exists(installedPath))
+                        {
+
+                            await PackageExtractor.ExtractPackageAsync(
+                                path,
+                                packageReaderPkg,
+                                packagePathResolver,
+                                packageExtractionContext,
+                                CancellationToken.None);
+                        } else {
+                            using (var packageReader = new PackageFolderReader(installedPath))
+                            {
+                                var pi = packageReader.GetIdentity();
+                                if ((pi.Id != packageIdentity.Id) || (pi.Version != packageIdentity.Version) ) {
+                                    WriteWarning("Skipping install because target directory exists but id/version differs! Use '-Force' to force overwrite");
+                                }
+                            }
+                        }
+                        WriteObject(installedPath);
                     }
-                    WriteObject(packageReader);
                 }
-            } else if ((null != SourcePackageDependencyInfo) && (SourcePackageDependencyInfo.Length > 0))
+            }
+            else if ((null != SourcePackageDependencyInfo) && (SourcePackageDependencyInfo.Length > 0))
             {
-                foreach (var packageToInstall in SourcePackageDependencyInfo)
+                foreach (var packageIndex in Enumerable.Range(0,SourcePackageDependencyInfo.Count()))
                 {
+                    var packageToInstall = SourcePackageDependencyInfo[packageIndex];
 
                     WriteVerbose($"Installing Package : {packageToInstall}");
                     var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
-                    var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
-                        packageToInstall,
-                        new PackageDownloadContext(cache),
-                        SettingsUtility.GetGlobalPackagesFolder(settings),
-                        logger: this, CancellationToken.None);
+                    using (var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
+                            packageToInstall,
+                            new PackageDownloadContext(cache),
+                            SettingsUtility.GetGlobalPackagesFolder(settings),
+                            logger: this, CancellationToken.None)
+                    ) {
+                        if (Name != null)
+                        {
+                            var id = packageToInstall.Id;
+                            if (packageIndex < Name.Count()){
+                                var mappedName = Name[packageIndex];
+                                WriteVerbose($"adding output path name mapping : {id} -> {mappedName}");
+                                packagePathResolver.AddPackageIdNameMapping(id, mappedName);
+                            } else {
+                                WriteVerbose($"no path name mapping provided for : {id}");
+                            }
+                        }
 
-                    if (!string.IsNullOrEmpty(Name))
-                    {
-                        packagePathResolver.AddPackageIdNameMapping(new PackageIdentity(packageToInstall.Id, packageToInstall.Version), Name);
-                    }
+                        var installedPath = packagePathResolver.GetInstallPath(packageToInstall);
 
-                    PackageReaderBase packageReader;
-                    var installedPath = packagePathResolver.GetInstallPath(packageToInstall);
-
-                    if (!Directory.Exists(installedPath) || Force)
-                    {
-                        await PackageExtractor.ExtractPackageAsync(
-                            downloadResult.PackageSource,
-                            downloadResult.PackageStream,
-                            packagePathResolver,
-                            packageExtractionContext,
-                            CancellationToken.None);
-
-                        packageReader = downloadResult.PackageReader;
-                    }
-                    else
-                    {
-                        packageReader = new PackageFolderReader(installedPath);
-                    }
-
-                    WriteObject(packageReader);
+                        if (!Directory.Exists(installedPath) || Force)
+                        {
+                            await PackageExtractor.ExtractPackageAsync(
+                                downloadResult.PackageSource,
+                                downloadResult.PackageStream,
+                                packagePathResolver,
+                                packageExtractionContext,
+                                CancellationToken.None);
+                        }
+                        WriteObject(installedPath);
+                    };
                 }
             }
         }
