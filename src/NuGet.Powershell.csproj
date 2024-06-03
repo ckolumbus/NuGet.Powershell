@@ -19,7 +19,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>NuGet.PowerShell</AssemblyName>
+    <AssemblyName>NuGet.Powershell</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
