@@ -48,7 +48,8 @@ param(
     [ValidateSet("Release", "Debug")]
     [string] $Configuration = "Release",
     [string] $BuildOutputDir,
-    [switch] $EnableAsyncLoggerExperimental
+    [switch] $EnableAsyncLoggerExperimental,
+    [string[]] $TestPath
 )
 
 ##########################################################################################
@@ -224,7 +225,6 @@ task publish checkPublishPrerequisites,  {
 function getPesterConfig {
     # Gather test results. Store them in a variable and file
     $pesterConfig = New-PesterConfiguration
-    $pesterConfig.Run.Path = "$BuildRoot\test"
     $pesterConfig.Run.PassThru = $true
     $pesterConfig.Output.Verbosity = "Detailed"
     $pesterConfig.TestResult.Enabled = $true
@@ -248,6 +248,12 @@ task test-ps7-only {
 task test-only {
     $pesterConfig = getPesterConfig
     $pesterConfig.Filter.ExcludeTag = @("disabled" )
+
+    if ($null -eq $TestPath) {
+        $pesterConfig.Run.Path = "$BuildRoot\test"
+    } else {
+        $pesterConfig.Run.Path = $TestPath
+    }
 
     $TestResults = Invoke-Pester -Configuration $pesterConfig
 
