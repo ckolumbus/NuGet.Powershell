@@ -67,7 +67,7 @@ namespace NuGet.PowerShell
         public PSCredential SourceCredential { get; set; } = null;
 
         private List<SourceRepository> repositories = new List<SourceRepository>();
-        private SourceCacheContext cache = new SourceCacheContext();
+        private SourceCacheContext cache = new SourceCacheContext {DirectDownload=true, NoCache=true};
         private string cwd;
 
         protected override Task BeginProcessingAsync()

@@ -91,7 +91,7 @@ namespace NuGet.PowerShell
         private NuGetFramework nuGetFramework;
         private ISettings settings;
         private List<SourceRepository> repositories = new List<SourceRepository>();
-        private SourceCacheContext cache = new SourceCacheContext();
+        private SourceCacheContext cache = new SourceCacheContext {DirectDownload=true, NoCache=true};
 
         private string cwd;
 
