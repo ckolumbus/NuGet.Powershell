@@ -222,7 +222,7 @@ namespace NuGet.PowerShell
             IEnumerable<SourceRepository> repositories,
             ILogger logger = null)
         {
-            var cache = new SourceCacheContext();
+            var cache = new SourceCacheContext {DirectDownload=true, NoCache=true};
             var cancellationToken = CancellationToken.None;
 
             return await GetPackageDependencyInfo(package, framework, repositories, cache, logger);
@@ -234,7 +234,7 @@ namespace NuGet.PowerShell
             IEnumerable<SourceRepository> repositories,
             ILogger logger = null)
         {
-            var cache = new SourceCacheContext();
+            var cache = new SourceCacheContext {DirectDownload=true, NoCache=true};
 
             return await GetPackageDependencyInfo(id, version, framework, repositories, cache, logger);
         }
