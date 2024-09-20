@@ -1,6 +1,7 @@
 # Changelog
 
-## 0.0.5-alpha
+## 0.0.5
+- fix: disable caching of packages and request to get consitent query behavior
 - feat: `New-NuGetPackage` supports `-Properties` to replace properties in `.nuspec` files
 - fix: fix `exclude` handling for dependencies in `New-NuGetPackage`
 - test: add test-suite for `New-NuGetPackage`
