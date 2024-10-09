@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.6
+- fix: Install-Package handles direct download directory correctly
+
 ## 0.0.5
 - fix: disable caching of packages and request to get consitent query behavior
 - feat: `New-NuGetPackage` supports `-Properties` to replace properties in `.nuspec` files

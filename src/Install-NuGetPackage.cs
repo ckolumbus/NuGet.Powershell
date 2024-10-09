@@ -208,7 +208,8 @@ namespace NuGet.PowerShell
                     var downloadResource = await packageToInstall.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
                     using (var downloadResult = await downloadResource.GetDownloadResourceResultAsync(
                             packageToInstall,
-                            new PackageDownloadContext(cache),
+                            // issue #3 use DirectDownload to avoid caching - PackageDownloadContext needs explicit directDownloadDirectory
+                            new PackageDownloadContext(cache, OutputPath, true),
                             SettingsUtility.GetGlobalPackagesFolder(settings),
                             logger: this, CancellationToken.None)
                     ) {
